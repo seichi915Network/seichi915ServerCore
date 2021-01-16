@@ -6,8 +6,7 @@ resolvers ++= Seq(
   "hub.spigotmc.org" at "https://hub.spigotmc.org/nexus/content/repositories/snapshots/",
   "oss.sonatype.org" at "https://oss.sonatype.org/content/repositories/snapshots",
   "maven.elmakers.com" at "https://maven.elmakers.com/repository/",
-  "papermc.io" at "https://papermc.io/repo/repository/maven-public/",
-  "repo.onarandombox.com" at "https://repo.onarandombox.com/content/repositories/multiverse/"
+  "papermc.io" at "https://papermc.io/repo/repository/maven-public/"
 )
 
 libraryDependencies ++= Seq(
