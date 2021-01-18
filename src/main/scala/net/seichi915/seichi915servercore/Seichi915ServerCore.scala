@@ -20,7 +20,7 @@ class Seichi915ServerCore extends JavaPlugin {
 
   override def onEnable(): Unit = {
     if (!Database.saveDefaultDatabase) {
-      getLogger.severe("デフォルトのデータベースファイルのコピーに失敗しました。プロキシを停止します。")
+      getLogger.severe("デフォルトのデータベースファイルのコピーに失敗しました。サーバーを停止します。")
       Bukkit.shutdown()
       return
     }
