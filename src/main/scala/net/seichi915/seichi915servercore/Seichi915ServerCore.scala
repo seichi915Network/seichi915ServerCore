@@ -1,5 +1,6 @@
 package net.seichi915.seichi915servercore
 
+import net.seichi915.seichi915servercore.database.Database
 import net.seichi915.seichi915servercore.listener.InventoryClickListener
 import net.seichi915.seichi915servercore.menu.ClickAction
 import org.bukkit.Bukkit
@@ -18,6 +19,11 @@ class Seichi915ServerCore extends JavaPlugin {
   Seichi915ServerCore.instance = this
 
   override def onEnable(): Unit = {
+    if (!Database.saveDefaultDatabase) {
+      getLogger.severe("デフォルトのデータベースファイルのコピーに失敗しました。プロキシを停止します。")
+      Bukkit.shutdown()
+      return
+    }
     Seq(
       new InventoryClickListener
     ).foreach(Bukkit.getPluginManager.registerEvents(_, this))
