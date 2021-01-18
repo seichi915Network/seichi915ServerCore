@@ -92,6 +92,7 @@ object Database {
               .apply()
           }
       case Failure(exception) => throw exception
+      case _                  =>
     }
   }
 }
