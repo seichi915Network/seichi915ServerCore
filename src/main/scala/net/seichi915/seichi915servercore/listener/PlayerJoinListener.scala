@@ -3,6 +3,7 @@ package net.seichi915.seichi915servercore.listener
 import net.seichi915.seichi915servercore.Seichi915ServerCore
 import net.seichi915.seichi915servercore.database.Database
 import net.seichi915.seichi915servercore.util.Implicits._
+import org.bukkit.Bukkit
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.{EventHandler, Listener}
 
@@ -22,7 +23,11 @@ class PlayerJoinListener extends Listener {
               onPlayerJoin(event)
             case Failure(exception) =>
               exception.printStackTrace()
-              event.getPlayer.kickPlayer("プレイヤーデータの作成に失敗しました。".toErrorMessage)
+              Bukkit.getScheduler.runTask(
+                Seichi915ServerCore.instance,
+                (() =>
+                   event.getPlayer
+                     .kickPlayer("プレイヤーデータの作成に失敗しました。".toErrorMessage)): Runnable)
           }
         } else
           Database.updatePlayerNameIfChanged(event.getPlayer) onComplete {
@@ -30,10 +35,18 @@ class PlayerJoinListener extends Listener {
               Seichi915ServerCore.playerDataMap += event.getPlayer -> value.get
             case Failure(exception) =>
               exception.printStackTrace()
-              event.getPlayer.kickPlayer("ユーザー名に更新に失敗しました。".toErrorMessage)
+              Bukkit.getScheduler.runTask(
+                Seichi915ServerCore.instance,
+                (() =>
+                   event.getPlayer
+                     .kickPlayer("ユーザー名に更新に失敗しました。".toErrorMessage)): Runnable)
           }
       case Failure(exception) =>
         exception.printStackTrace()
-        event.getPlayer.kickPlayer("プレイヤーデータの読み込みに失敗しました。".toErrorMessage)
+        Bukkit.getScheduler.runTask(
+          Seichi915ServerCore.instance,
+          (() =>
+             event.getPlayer
+               .kickPlayer("プレイヤーデータの読み込みに失敗しました。".toErrorMessage)): Runnable)
     }
 }

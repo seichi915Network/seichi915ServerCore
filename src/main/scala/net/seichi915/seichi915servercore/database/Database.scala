@@ -49,7 +49,7 @@ object Database {
     }
 
   def getPlayerData(player: Player): Future[Option[PlayerData]] = Future {
-    val playerDataList = DB readOnly { implicit session =>
+    val playerDataList = DB localTx { implicit session =>
       sql"SELECT total_break_amount FROM playerdata WHERE uuid = ${player.getUniqueId}"
         .map(resultSet => PlayerData(resultSet.long("total_break_amount")))
         .list()
@@ -78,7 +78,7 @@ object Database {
   def updatePlayerNameIfChanged(player: Player): Future[Unit] = Future {
     getPlayerData(player) onComplete {
       case Success(value) if value.nonEmpty =>
-        val previousPlayerName = DB readOnly { implicit session =>
+        val previousPlayerName = DB localTx { implicit session =>
           sql"SELECT name FROM playerdata WHERE uuid = ${player.getUniqueId}"
             .map(_.string("name"))
             .list()

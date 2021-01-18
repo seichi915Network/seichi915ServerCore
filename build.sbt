@@ -15,7 +15,8 @@ libraryDependencies ++= Seq(
   "net.coreprotect" % "coreprotect" % "19.4",
   "org.scalikejdbc" %% "scalikejdbc" % "3.5.0",
   "org.xerial" % "sqlite-jdbc" % "3.7.2",
-  "ch.qos.logback" % "logback-classic" % "1.2.3"
+  "ch.qos.logback" % "logback-classic" % "1.2.3",
+  "org.typelevel" %% "cats-effect" % "2.3.1"
 )
 
 assemblyMergeStrategy in assembly := {
