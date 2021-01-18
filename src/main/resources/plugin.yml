@@ -7,6 +7,8 @@ authors: [stouma915]
 description: "seichi915Server コアプラグイン"
 website: https://www.seichi915.net
 commands: {}
+depend:
+  - CoreProtect
 permissions:
   seichi915servercore.*:
     description: Grant all permissions of seichi915ServerCore
