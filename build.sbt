@@ -12,7 +12,10 @@ resolvers ++= Seq(
 
 libraryDependencies ++= Seq(
   "com.destroystokyo.paper" % "paper-api" % "1.16.4-R0.1-SNAPSHOT",
-  "net.coreprotect" % "coreprotect" % "19.4"
+  "net.coreprotect" % "coreprotect" % "19.4",
+  "org.scalikejdbc" %% "scalikejdbc" % "3.5.0",
+  "org.xerial" % "sqlite-jdbc" % "3.7.2",
+  "ch.qos.logback" % "logback-classic" % "1.2.3"
 )
 
 assemblyMergeStrategy in assembly := {
