@@ -13,7 +13,7 @@ class PlayerQuitListener extends Listener {
     Seichi915ServerCore.playerDataMap
       .getOrElse(event.getPlayer, {
         Seichi915ServerCore.instance.getLogger.warning(
-          s"${event.getPlayer}さんのプレイヤーデータが見つかりませんでした。")
+          s"${event.getPlayer.getName}さんのプレイヤーデータが見つかりませんでした。")
         return
       })
       .save(event.getPlayer) onComplete {
@@ -22,7 +22,7 @@ class PlayerQuitListener extends Listener {
       case Failure(exception) =>
         exception.printStackTrace()
         Seichi915ServerCore.instance.getLogger
-          .warning(s"${event.getPlayer}さんのプレイヤーデータのセーブに失敗しました。")
+          .warning(s"${event.getPlayer.getName}さんのプレイヤーデータのセーブに失敗しました。")
         Seichi915ServerCore.playerDataMap.remove(event.getPlayer)
     }
 }
