@@ -2,7 +2,7 @@ package net.seichi915.seichi915servercore.listener
 
 import net.seichi915.seichi915servercore.Seichi915ServerCore
 import net.seichi915.seichi915servercore.util.Implicits._
-import org.bukkit.NamespacedKey
+import org.bukkit.{GameMode, NamespacedKey}
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.{InventoryClickEvent, InventoryType}
 import org.bukkit.event.{EventHandler, EventPriority, Listener}
@@ -17,6 +17,9 @@ class InventoryClickListener extends Listener {
       return
     if (event.getCurrentItem.isNull) return
     if (!event.getWhoClicked.isInstanceOf[Player]) return
+    if (event.getWhoClicked
+          .asInstanceOf[Player]
+          .getGameMode != GameMode.CREATIVE) event.setCancelled(true)
     if (event.getCurrentItem.getItemMeta.isNull) return
     if (event.getCurrentItem.getItemMeta.getPersistentDataContainer.isNull)
       return
