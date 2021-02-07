@@ -10,7 +10,7 @@ import net.seichi915.seichi915servercore.inventory.Seichi915ServerInventoryHolde
 import net.seichi915.seichi915servercore.menu.ClickAction
 import net.seichi915.seichi915servercore.playerdata.PlayerData
 import org.bukkit.block.Block
-import org.bukkit.{ChatColor, Material, NamespacedKey}
+import org.bukkit.{ChatColor, Material, NamespacedKey, Sound}
 import org.bukkit.entity.Player
 import org.bukkit.inventory.{Inventory, ItemStack}
 import org.bukkit.persistence.PersistentDataType
@@ -49,6 +49,21 @@ object Implicits {
       Database.getPlayerData(player)
 
     def createNewPlayerData: Future[Unit] = Database.createNewPlayerData(player)
+
+    def playMenuButtonClickSound(): Unit =
+      player.playSound(player.getLocation, Sound.UI_BUTTON_CLICK, 1, 1)
+
+    def playDisabledMenuButtonClickSound(): Unit =
+      player.playSound(player.getLocation,
+                       Sound.BLOCK_STONE_BUTTON_CLICK_ON,
+                       1,
+                       0)
+
+    def playChangeMaxMultiBreakSizeSound(): Unit =
+      player.playSound(player.getLocation, Sound.ENTITY_PLAYER_LEVELUP, 1, 1)
+
+    def playLevelUpSound(): Unit =
+      player.playSound(player.getLocation, Sound.ENTITY_PLAYER_LEVELUP, 1, 0)
   }
 
   implicit class StringOps(string: String) {

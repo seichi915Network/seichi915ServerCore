@@ -66,8 +66,10 @@ class PlayerJoinListener extends Listener {
                     openMultiBreakSettingButtonMeta)
                   openMultiBreakSettingButton
                     .addUnsafeEnchantment(Enchantment.ARROW_DAMAGE, 1)
-                  openMultiBreakSettingButton.setClickAction(
-                    MultiBreakSettingMenu.open)
+                  openMultiBreakSettingButton.setClickAction { player =>
+                    MultiBreakSettingMenu.open(player)
+                    player.playMenuButtonClickSound()
+                  }
                   inventory.setItem(9, openMultiBreakSettingButton)
                 }): Runnable
               )

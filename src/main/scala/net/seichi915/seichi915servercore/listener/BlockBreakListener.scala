@@ -33,9 +33,11 @@ class BlockBreakListener extends Listener {
       block.setType(Material.AIR)
       val previousMaxMultiBreakSize = playerData.getMaxMultiBreakSize
       playerData.setTotalBreakAmount(playerData.getTotalBreakAmount + 1)
-      if (playerData.getMaxMultiBreakSize != previousMaxMultiBreakSize)
+      if (playerData.getMaxMultiBreakSize != previousMaxMultiBreakSize) {
         event.getPlayer.sendMessage(
           s"マルチブレイクのサイズ上限が ${ChatColor.GREEN}${playerData.getMaxMultiBreakSize} ${ChatColor.RESET}になりました。".toSuccessMessage)
+        event.getPlayer.playChangeMaxMultiBreakSizeSound()
+      }
     }
     Seichi915ServerCore.bossBarMap
       .getOrElse(event.getPlayer, return )

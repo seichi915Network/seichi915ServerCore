@@ -38,6 +38,7 @@ object MultiBreakSettingMenu extends Menu {
       toggleMultiBreakButton.setItemMeta(toggleMultiBreakButtonMeta)
       toggleMultiBreakButton.setClickAction { _ =>
         playerData.setMultiBreakEnabled(!playerData.isMultiBreakEnabled)
+        player.playMenuButtonClickSound()
         open(player)
       }
       inventory.setItem(4, toggleMultiBreakButton)
@@ -57,11 +58,13 @@ object MultiBreakSettingMenu extends Menu {
       increaseWidthButtonMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES)
       increaseWidthButton.setItemMeta(increaseWidthButtonMeta)
       increaseWidthButton.setClickAction { player =>
-        if (!(multiBreak.getWidth >= playerData.getMaxMultiBreakSize))
+        if (!(multiBreak.getWidth >= playerData.getMaxMultiBreakSize)) {
           playerData.setMultiBreak(
             MultiBreak(multiBreak.getWidth + 2,
                        multiBreak.getHeight,
                        multiBreak.getDepth))
+          player.playMenuButtonClickSound()
+        } else player.playDisabledMenuButtonClickSound()
         open(player)
       }
       inventory.setItem(11, increaseWidthButton)
@@ -81,11 +84,13 @@ object MultiBreakSettingMenu extends Menu {
       deduceWidthButtonMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES)
       deduceWidthButton.setItemMeta(deduceWidthButtonMeta)
       deduceWidthButton.setClickAction { player =>
-        if (!(multiBreak.getWidth <= 3))
+        if (!(multiBreak.getWidth <= 3)) {
           playerData.setMultiBreak(
             MultiBreak(multiBreak.getWidth - 2,
                        multiBreak.getHeight,
                        multiBreak.getDepth))
+          player.playMenuButtonClickSound()
+        } else player.playDisabledMenuButtonClickSound()
         open(player)
       }
       inventory.setItem(20, deduceWidthButton)
@@ -105,11 +110,13 @@ object MultiBreakSettingMenu extends Menu {
       increaseHeightButtonMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES)
       increaseHeightButton.setItemMeta(increaseHeightButtonMeta)
       increaseHeightButton.setClickAction { player =>
-        if (!(multiBreak.getHeight >= playerData.getMaxMultiBreakSize))
+        if (!(multiBreak.getHeight >= playerData.getMaxMultiBreakSize)) {
           playerData.setMultiBreak(
             MultiBreak(multiBreak.getWidth,
                        multiBreak.getHeight + 2,
                        multiBreak.getDepth))
+          player.playMenuButtonClickSound()
+        } else player.playDisabledMenuButtonClickSound()
         open(player)
       }
       inventory.setItem(13, increaseHeightButton)
@@ -129,11 +136,13 @@ object MultiBreakSettingMenu extends Menu {
       deduceHeightButtonMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES)
       deduceHeightButton.setItemMeta(deduceHeightButtonMeta)
       deduceHeightButton.setClickAction { player =>
-        if (!(multiBreak.getHeight <= 3))
+        if (!(multiBreak.getHeight <= 3)) {
           playerData.setMultiBreak(
             MultiBreak(multiBreak.getWidth,
                        multiBreak.getHeight - 2,
                        multiBreak.getDepth))
+          player.playMenuButtonClickSound()
+        } else player.playDisabledMenuButtonClickSound()
         open(player)
       }
       inventory.setItem(22, deduceHeightButton)
@@ -153,11 +162,13 @@ object MultiBreakSettingMenu extends Menu {
       increaseDepthButtonMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES)
       increaseDepthButton.setItemMeta(increaseDepthButtonMeta)
       increaseDepthButton.setClickAction { player =>
-        if (!(multiBreak.getDepth >= playerData.getMaxMultiBreakSize))
+        if (!(multiBreak.getDepth >= playerData.getMaxMultiBreakSize)) {
           playerData.setMultiBreak(
             MultiBreak(multiBreak.getWidth,
                        multiBreak.getHeight,
                        multiBreak.getDepth + 2))
+          player.playMenuButtonClickSound()
+        } else player.playDisabledMenuButtonClickSound()
         open(player)
       }
       inventory.setItem(15, increaseDepthButton)
@@ -177,11 +188,13 @@ object MultiBreakSettingMenu extends Menu {
       deduceDepthButtonMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES)
       deduceDepthButton.setItemMeta(deduceDepthButtonMeta)
       deduceDepthButton.setClickAction { player =>
-        if (!(multiBreak.getDepth <= 3))
+        if (!(multiBreak.getDepth <= 3)) {
           playerData.setMultiBreak(
             MultiBreak(multiBreak.getWidth,
                        multiBreak.getHeight,
                        multiBreak.getDepth - 2))
+          player.playMenuButtonClickSound()
+        } else player.playDisabledMenuButtonClickSound()
         open(player)
       }
       inventory.setItem(24, deduceDepthButton)
