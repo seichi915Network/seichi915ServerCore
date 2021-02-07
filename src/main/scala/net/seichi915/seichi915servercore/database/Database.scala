@@ -1,6 +1,7 @@
 package net.seichi915.seichi915servercore.database
 
 import net.seichi915.seichi915servercore.Seichi915ServerCore
+import net.seichi915.seichi915servercore.multibreak.MultiBreak
 import net.seichi915.seichi915servercore.playerdata.PlayerData
 import org.bukkit.entity.Player
 import scalikejdbc._
@@ -50,8 +51,15 @@ object Database {
 
   def getPlayerData(player: Player): Future[Option[PlayerData]] = Future {
     val playerDataList = DB localTx { implicit session =>
-      sql"SELECT total_break_amount FROM playerdata WHERE uuid = ${player.getUniqueId}"
-        .map(resultSet => PlayerData(resultSet.long("total_break_amount")))
+      sql"SELECT * FROM playerdata WHERE uuid = ${player.getUniqueId}"
+        .map(resultSet =>
+          PlayerData(
+            resultSet.long("total_break_amount"),
+            resultSet.boolean("multibreak_enabled"),
+            MultiBreak(resultSet.int("multibreak_width"),
+                       resultSet.int("multibreak_height"),
+                       resultSet.int("multibreak_depth"))
+        ))
         .list()
         .apply()
     }
@@ -60,7 +68,23 @@ object Database {
 
   def createNewPlayerData(player: Player): Future[Unit] = Future {
     DB localTx { implicit session =>
-      sql"INSERT INTO playerdata (uuid, name, total_break_amount) VALUES (${player.getUniqueId}, ${player.getName}, 0)"
+      sql"""INSERT INTO playerdata (
+           uuid,
+           name,
+           total_break_amount,
+           multibreak_enabled,
+           multibreak_width,
+           multibreak_height,
+           multibreak_depth
+           ) VALUES (
+           ${player.getUniqueId},
+           ${player.getName},
+           0,
+           1,
+           3,
+           3,
+           3
+           )"""
         .update()
         .apply()
     }
@@ -69,7 +93,14 @@ object Database {
   def savePlayerData(player: Player, playerData: PlayerData): Future[Unit] =
     Future {
       DB localTx { implicit session =>
-        sql"UPDATE playerdata SET name=${player.getName}, total_break_amount=${playerData.getTotalBreakAmount} WHERE uuid = ${player.getUniqueId}"
+        sql"""UPDATE playerdata SET
+             name=${player.getName},
+             total_break_amount=${playerData.getTotalBreakAmount},
+             multibreak_enabled=${playerData.isMultiBreakEnabled},
+             multibreak_width=${playerData.getMultiBreak.getWidth},
+             multibreak_height=${playerData.getMultiBreak.getHeight},
+             multibreak_depth=${playerData.getMultiBreak.getDepth}
+             WHERE uuid = ${player.getUniqueId}"""
           .update()
           .apply()
       }

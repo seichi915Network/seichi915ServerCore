@@ -8,11 +8,13 @@ resolvers ++= Seq(
   "maven.elmakers.com" at "https://maven.elmakers.com/repository/",
   "papermc.io" at "https://papermc.io/repo/repository/maven-public/",
   "maven.playpro.com" at "https://maven.playpro.com",
+  "maven.enginehub.org" at "https://maven.enginehub.org/repo/"
 )
 
 libraryDependencies ++= Seq(
   "com.destroystokyo.paper" % "paper-api" % "1.16.4-R0.1-SNAPSHOT",
   "net.coreprotect" % "coreprotect" % "19.4",
+  "com.sk89q.worldguard" % "worldguard-bukkit" % "7.0.4",
   "org.scalikejdbc" %% "scalikejdbc" % "3.5.0",
   "org.xerial" % "sqlite-jdbc" % "3.7.2",
   "ch.qos.logback" % "logback-classic" % "1.2.3",

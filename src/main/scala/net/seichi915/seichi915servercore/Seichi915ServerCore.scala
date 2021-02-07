@@ -32,6 +32,7 @@ class Seichi915ServerCore extends JavaPlugin {
       return
     }
     Seq(
+      new BlockBreakListener,
       new InventoryClickListener,
       new PlayerJoinListener,
       new PlayerQuitListener

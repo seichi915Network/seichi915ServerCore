@@ -9,6 +9,7 @@ website: https://www.seichi915.net
 commands: {}
 depend:
   - CoreProtect
+  - WorldGuard
 permissions:
   seichi915servercore.*:
     description: Grant all permissions of seichi915ServerCore

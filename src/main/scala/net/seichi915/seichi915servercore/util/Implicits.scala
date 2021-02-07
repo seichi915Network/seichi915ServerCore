@@ -1,11 +1,16 @@
 package net.seichi915.seichi915servercore.util
 
+import com.sk89q.worldedit.bukkit.BukkitAdapter
+import com.sk89q.worldguard.WorldGuard
+import com.sk89q.worldguard.bukkit.WorldGuardPlugin
+import com.sk89q.worldguard.protection.flags.Flags
 import net.seichi915.seichi915servercore.Seichi915ServerCore
 import net.seichi915.seichi915servercore.database.Database
 import net.seichi915.seichi915servercore.inventory.Seichi915ServerInventoryHolder
 import net.seichi915.seichi915servercore.menu.ClickAction
 import net.seichi915.seichi915servercore.playerdata.PlayerData
-import org.bukkit.{ChatColor, NamespacedKey}
+import org.bukkit.block.Block
+import org.bukkit.{ChatColor, Material, NamespacedKey}
 import org.bukkit.entity.Player
 import org.bukkit.inventory.{Inventory, ItemStack}
 import org.bukkit.persistence.PersistentDataType
@@ -60,4 +65,39 @@ object Implicits {
       s"${ChatColor.AQUA}[${ChatColor.RED}seichi915Server${ChatColor.AQUA}]${ChatColor.RESET} $string"
   }
 
+  implicit class BlockOps(block: Block) {
+    import Material._
+    private val unbreakableMaterials = List(
+      AIR,
+      COMMAND_BLOCK,
+      CHAIN_COMMAND_BLOCK,
+      REPEATING_COMMAND_BLOCK,
+      BEDROCK,
+      STRUCTURE_BLOCK,
+      STRUCTURE_VOID,
+      BARRIER,
+      END_PORTAL_FRAME,
+      END_PORTAL,
+      NETHER_PORTAL
+    )
+
+    def canBreak(player: Player): Boolean = {
+      if (block.isNull) return false
+      if (unbreakableMaterials.contains(block.getType)) return false
+      if (player.hasPermission(
+            s"worldguard.region.bypass.${block.getWorld.getName}")) return true
+      val regionQuery =
+        WorldGuard.getInstance.getPlatform.getRegionContainer.createQuery
+      val localPlayer = WorldGuardPlugin.inst.wrapPlayer(player)
+      val canBuild = regionQuery.testState(
+        BukkitAdapter.adapt(block.getLocation),
+        localPlayer,
+        Flags.BUILD)
+      val canBlockBreak = regionQuery.testState(
+        BukkitAdapter.adapt(block.getLocation),
+        localPlayer,
+        Flags.BLOCK_BREAK)
+      canBuild && canBlockBreak
+    }
+  }
 }
