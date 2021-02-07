@@ -6,6 +6,7 @@ import net.seichi915.seichi915servercore.menu.ClickAction
 import net.seichi915.seichi915servercore.playerdata.PlayerData
 import net.seichi915.seichi915servercore.task._
 import org.bukkit.Bukkit
+import org.bukkit.boss.BossBar
 import org.bukkit.entity.Player
 import org.bukkit.plugin.java.JavaPlugin
 import org.bukkit.scheduler.BukkitRunnable
@@ -20,6 +21,7 @@ object Seichi915ServerCore {
 
   var playerDataMap: mutable.HashMap[Player, PlayerData] = mutable.HashMap()
   var clickActionMap: mutable.HashMap[UUID, ClickAction] = mutable.HashMap()
+  var bossBarMap: mutable.HashMap[Player, BossBar] = mutable.HashMap()
 }
 
 class Seichi915ServerCore extends JavaPlugin {

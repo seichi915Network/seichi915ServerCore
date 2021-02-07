@@ -6,10 +6,13 @@ import org.bukkit.entity.Player
 
 import scala.concurrent.Future
 
-case class PlayerData(totalBreakAmount: Long,
+case class PlayerData(var totalBreakAmount: Long,
                       var multiBreakEnabled: Boolean,
                       var multiBreak: MultiBreak) {
   def getTotalBreakAmount: Long = totalBreakAmount
+
+  def setTotalBreakAmount(totalBreakAmount: Long): Unit =
+    this.totalBreakAmount = totalBreakAmount
 
   def isMultiBreakEnabled: Boolean = multiBreakEnabled
 
