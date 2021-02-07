@@ -6,12 +6,13 @@ import com.sk89q.worldguard.bukkit.WorldGuardPlugin
 import com.sk89q.worldguard.protection.flags.Flags
 import net.seichi915.seichi915servercore.Seichi915ServerCore
 import net.seichi915.seichi915servercore.database.Database
+import net.seichi915.seichi915servercore.inventory.Seichi915ServerInventoryHolder
 import net.seichi915.seichi915servercore.menu.ClickAction
 import net.seichi915.seichi915servercore.playerdata.PlayerData
 import org.bukkit.block.Block
 import org.bukkit.{ChatColor, Material, NamespacedKey}
 import org.bukkit.entity.Player
-import org.bukkit.inventory.ItemStack
+import org.bukkit.inventory.{Inventory, ItemStack}
 import org.bukkit.persistence.PersistentDataType
 
 import java.util.UUID
@@ -22,6 +23,12 @@ object Implicits {
     def isNull: Boolean = Option(any).flatMap(_ => Some(false)).getOrElse(true)
 
     def nonNull: Boolean = !isNull
+  }
+
+  implicit class InventoryOps(inventory: Inventory) {
+    def isSeichi915ServerInventory: Boolean =
+      inventory.getHolder.nonNull && inventory.getHolder
+        .isInstanceOf[Seichi915ServerInventoryHolder]
   }
 
   implicit class ItemStackOps(itemStack: ItemStack) {

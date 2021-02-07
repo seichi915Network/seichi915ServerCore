@@ -6,7 +6,6 @@ import org.bukkit.NamespacedKey
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.{EventHandler, Listener}
-import org.bukkit.inventory.PlayerInventory
 import org.bukkit.persistence.PersistentDataType
 
 import java.util.UUID
@@ -14,7 +13,7 @@ import java.util.UUID
 class InventoryClickListener extends Listener {
   @EventHandler
   def onInventoryClick(event: InventoryClickEvent): Unit = {
-    if (!event.getInventory.isInstanceOf[PlayerInventory]) return
+    if (!event.getInventory.isSeichi915ServerInventory) return
     if (event.getCurrentItem.isNull) return
     if (!event.getWhoClicked.isInstanceOf[Player]) return
     val uuid = UUID.fromString(
