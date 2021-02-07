@@ -35,6 +35,7 @@ class Seichi915ServerCore extends JavaPlugin {
       new BlockBreakListener,
       new InventoryClickListener,
       new PlayerJoinListener,
+      new PlayerMoveListener,
       new PlayerQuitListener
     ).foreach(Bukkit.getPluginManager.registerEvents(_, this))
     Map(

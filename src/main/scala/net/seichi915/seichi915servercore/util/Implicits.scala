@@ -84,6 +84,7 @@ object Implicits {
     def canBreak(player: Player): Boolean = {
       if (block.isNull) return false
       if (unbreakableMaterials.contains(block.getType)) return false
+      if (block.getLocation.getBlockY <= 4) return false
       if (player.hasPermission(
             s"worldguard.region.bypass.${block.getWorld.getName}")) return true
       val regionQuery =
