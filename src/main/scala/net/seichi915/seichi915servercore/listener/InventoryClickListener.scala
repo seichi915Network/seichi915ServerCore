@@ -4,20 +4,25 @@ import net.seichi915.seichi915servercore.Seichi915ServerCore
 import net.seichi915.seichi915servercore.util.Implicits._
 import org.bukkit.NamespacedKey
 import org.bukkit.entity.Player
-import org.bukkit.event.inventory.InventoryClickEvent
-import org.bukkit.event.{EventHandler, Listener}
-import org.bukkit.inventory.PlayerInventory
+import org.bukkit.event.inventory.{InventoryClickEvent, InventoryType}
+import org.bukkit.event.{EventHandler, EventPriority, Listener}
 import org.bukkit.persistence.PersistentDataType
 
 import java.util.UUID
 
 class InventoryClickListener extends Listener {
-  @EventHandler
+  @EventHandler(priority = EventPriority.MONITOR)
   def onInventoryClick(event: InventoryClickEvent): Unit = {
-    if (!event.getInventory.isSeichi915ServerInventory && !event.getInventory
-          .isInstanceOf[PlayerInventory]) return
+    if (!event.getInventory.isSeichi915ServerInventory && event.getInventory.getType != InventoryType.CRAFTING)
+      return
     if (event.getCurrentItem.isNull) return
     if (!event.getWhoClicked.isInstanceOf[Player]) return
+    if (event.getCurrentItem.getItemMeta.isNull) return
+    if (event.getCurrentItem.getItemMeta.getPersistentDataContainer.isNull)
+      return
+    if (!event.getCurrentItem.getItemMeta.getPersistentDataContainer.has(
+          new NamespacedKey(Seichi915ServerCore.instance, "click_action"),
+          PersistentDataType.STRING)) return
     val uuid = UUID.fromString(
       event.getCurrentItem.getItemMeta.getPersistentDataContainer.get(
         new NamespacedKey(Seichi915ServerCore.instance, "click_action"),

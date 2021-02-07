@@ -2,10 +2,13 @@ package net.seichi915.seichi915servercore.listener
 
 import net.seichi915.seichi915servercore.Seichi915ServerCore
 import net.seichi915.seichi915servercore.database.Database
+import net.seichi915.seichi915servercore.menu.MultiBreakSettingMenu
 import net.seichi915.seichi915servercore.util.Implicits._
-import org.bukkit.Bukkit
+import org.bukkit.enchantments.Enchantment
+import org.bukkit.{Bukkit, ChatColor, Material}
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.{EventHandler, Listener}
+import org.bukkit.inventory.{ItemFlag, ItemStack}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.util.{Failure, Success}
@@ -33,6 +36,29 @@ class PlayerJoinListener extends Listener {
           Database.updatePlayerNameIfChanged(event.getPlayer) onComplete {
             case Success(_) =>
               Seichi915ServerCore.playerDataMap += event.getPlayer -> value.get
+              Bukkit.getScheduler.runTask(
+                Seichi915ServerCore.instance,
+                (() => {
+                  val inventory = event.getPlayer.getInventory
+                  inventory.clear()
+                  val openMultiBreakSettingButton =
+                    new ItemStack(Material.DIAMOND_PICKAXE)
+                  val openMultiBreakSettingButtonMeta =
+                    openMultiBreakSettingButton.getItemMeta
+                  openMultiBreakSettingButtonMeta.setDisplayName(
+                    s"${ChatColor.AQUA}マルチブレイク設定を開く")
+                  openMultiBreakSettingButtonMeta.addItemFlags(
+                    ItemFlag.HIDE_ATTRIBUTES,
+                    ItemFlag.HIDE_ENCHANTS)
+                  openMultiBreakSettingButton.setItemMeta(
+                    openMultiBreakSettingButtonMeta)
+                  openMultiBreakSettingButton
+                    .addUnsafeEnchantment(Enchantment.ARROW_DAMAGE, 1)
+                  openMultiBreakSettingButton.setClickAction(
+                    MultiBreakSettingMenu.open)
+                  inventory.setItem(9, openMultiBreakSettingButton)
+                }): Runnable
+              )
             case Failure(exception) =>
               exception.printStackTrace()
               Bukkit.getScheduler.runTask(

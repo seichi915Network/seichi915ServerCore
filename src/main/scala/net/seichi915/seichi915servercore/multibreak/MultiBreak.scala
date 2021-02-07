@@ -1,11 +1,11 @@
 package net.seichi915.seichi915servercore.multibreak
 
 case class MultiBreak(width: Int, height: Int, depth: Int) {
-  require(width % 3 == 0 && height % 3 == 0 && depth % 3 == 0)
+  require(width % 2 == 1 && height % 2 == 1 && depth % 2 == 1)
 
   def getWidth: Int = width
 
   def getHeight: Int = height
 
-  def getDepth: Int = height
+  def getDepth: Int = depth
 }
