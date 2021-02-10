@@ -28,12 +28,14 @@ object MultiBreakSettingMenu extends Menu {
     player.openInventory(inventory)
     val task = IO {
       val toggleMultiBreakButton = new ItemStack(
-        if (playerData.isMultiBreakEnabled) Material.RED_WOOL
-        else Material.BLUE_WOOL)
+        if (playerData.isMultiBreakEnabled) Material.BLUE_WOOL
+        else Material.RED_WOOL)
       val toggleMultiBreakButtonMeta = toggleMultiBreakButton.getItemMeta
       toggleMultiBreakButtonMeta.setDisplayName(
-        s"${if (playerData.isMultiBreakEnabled) s"${ChatColor.RED}マルチブレイクをオフにする"
-        else s"${ChatColor.AQUA}マルチブレイクをオンにする"}")
+        s"${if (playerData.isMultiBreakEnabled) s"${ChatColor.AQUA}マルチブレイクは現在オンです"
+        else s"${ChatColor.RED}マルチブレイクは現在オフです"}")
+      toggleMultiBreakButtonMeta.setLore(
+        List(s"${ChatColor.WHITE}クリックでオン・オフを切り替えられます。").asJava)
       toggleMultiBreakButtonMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES)
       toggleMultiBreakButton.setItemMeta(toggleMultiBreakButtonMeta)
       toggleMultiBreakButton.setClickAction { _ =>
