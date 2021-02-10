@@ -55,6 +55,8 @@ object Database {
         .map(resultSet =>
           PlayerData(
             resultSet.long("total_break_amount"),
+            resultSet.int("rank"),
+            resultSet.int("exp"),
             resultSet.boolean("multibreak_enabled"),
             MultiBreak(resultSet.int("multibreak_width"),
                        resultSet.int("multibreak_height"),
@@ -72,6 +74,8 @@ object Database {
            uuid,
            name,
            total_break_amount,
+           rank,
+           exp,
            multibreak_enabled,
            multibreak_width,
            multibreak_height,
@@ -79,6 +83,8 @@ object Database {
            ) VALUES (
            ${player.getUniqueId},
            ${player.getName},
+           0,
+           1,
            0,
            1,
            3,
@@ -96,6 +102,8 @@ object Database {
         sql"""UPDATE playerdata SET
              name=${player.getName},
              total_break_amount=${playerData.getTotalBreakAmount},
+             rank=${playerData.getRank},
+             exp=${playerData.getExp},
              multibreak_enabled=${playerData.isMultiBreakEnabled},
              multibreak_width=${playerData.getMultiBreak.getWidth},
              multibreak_height=${playerData.getMultiBreak.getHeight},

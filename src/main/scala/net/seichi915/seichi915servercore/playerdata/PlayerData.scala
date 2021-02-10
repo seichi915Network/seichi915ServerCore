@@ -7,12 +7,22 @@ import org.bukkit.entity.Player
 import scala.concurrent.Future
 
 case class PlayerData(var totalBreakAmount: Long,
+                      var rank: Int,
+                      var exp: Int,
                       var multiBreakEnabled: Boolean,
                       var multiBreak: MultiBreak) {
   def getTotalBreakAmount: Long = totalBreakAmount
 
   def setTotalBreakAmount(totalBreakAmount: Long): Unit =
     this.totalBreakAmount = totalBreakAmount
+
+  def getRank: Int = rank
+
+  def setRank(rank: Int): Unit = this.rank = rank
+
+  def getExp: Int = exp
+
+  def setExp(exp: Int): Unit = this.exp = exp
 
   def isMultiBreakEnabled: Boolean = multiBreakEnabled
 
