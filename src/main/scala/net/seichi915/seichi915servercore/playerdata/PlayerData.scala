@@ -10,7 +10,9 @@ case class PlayerData(var totalBreakAmount: Long,
                       var rank: Int,
                       var exp: Int,
                       var multiBreakEnabled: Boolean,
-                      var multiBreak: MultiBreak) {
+                      var multiBreak: MultiBreak,
+                      var liquidHardenerEnabled: Boolean,
+                      var liquidHardener: MultiBreak) {
   def getTotalBreakAmount: Long = totalBreakAmount
 
   def setTotalBreakAmount(totalBreakAmount: Long): Unit =
@@ -32,6 +34,16 @@ case class PlayerData(var totalBreakAmount: Long,
   def getMultiBreak: MultiBreak = multiBreak
 
   def setMultiBreak(multiBreak: MultiBreak): Unit = this.multiBreak = multiBreak
+
+  def isLiquidHardenerEnabled: Boolean = liquidHardenerEnabled
+
+  def setLiquidHardenerEnabled(liquidHardenerEnabled: Boolean): Unit =
+    this.liquidHardenerEnabled = liquidHardenerEnabled
+
+  def getLiquidHardener: MultiBreak = liquidHardener
+
+  def setLiquidHardener(liquidHardener: MultiBreak): Unit =
+    this.liquidHardener = liquidHardener
 
   def getMaxMultiBreakSize: Int =
     if (getTotalBreakAmount >= 10000000000L) 17

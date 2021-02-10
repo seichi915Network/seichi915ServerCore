@@ -2,7 +2,10 @@ package net.seichi915.seichi915servercore.listener
 
 import net.seichi915.seichi915servercore.Seichi915ServerCore
 import net.seichi915.seichi915servercore.database.Database
-import net.seichi915.seichi915servercore.menu.MultiBreakSettingMenu
+import net.seichi915.seichi915servercore.menu.{
+  LiquidHardenerSettingMenu,
+  MultiBreakSettingMenu
+}
 import net.seichi915.seichi915servercore.util.Implicits._
 import org.bukkit.boss.{BarColor, BarStyle}
 import org.bukkit.enchantments.Enchantment
@@ -71,6 +74,24 @@ class PlayerJoinListener extends Listener {
                     player.playMenuButtonClickSound()
                   }
                   inventory.setItem(9, openMultiBreakSettingButton)
+                  val openLiquidHardenerSettingButton =
+                    new ItemStack(Material.IRON_PICKAXE)
+                  val openLiquidHardenerSettingButtonMeta =
+                    openLiquidHardenerSettingButton.getItemMeta
+                  openLiquidHardenerSettingButtonMeta.setDisplayName(
+                    s"${ChatColor.AQUA}液体絶対固めるマン設定を開く")
+                  openLiquidHardenerSettingButtonMeta.addItemFlags(
+                    ItemFlag.HIDE_ATTRIBUTES,
+                    ItemFlag.HIDE_ENCHANTS)
+                  openLiquidHardenerSettingButton.setItemMeta(
+                    openLiquidHardenerSettingButtonMeta)
+                  openLiquidHardenerSettingButton
+                    .addUnsafeEnchantment(Enchantment.ARROW_DAMAGE, 1)
+                  openLiquidHardenerSettingButton.setClickAction { player =>
+                    LiquidHardenerSettingMenu.open(player)
+                    player.playMenuButtonClickSound()
+                  }
+                  inventory.setItem(10, openLiquidHardenerSettingButton)
                   val pickaxe = new ItemStack(Material.DIAMOND_PICKAXE)
                   val pickaxeMeta = pickaxe.getItemMeta
                   pickaxeMeta.setUnbreakable(true)

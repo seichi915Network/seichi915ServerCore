@@ -1,7 +1,9 @@
 package net.seichi915.seichi915servercore.listener
 
+import net.seichi915.seichi915servercore.Seichi915ServerCore
 import net.seichi915.seichi915servercore.external.ExternalPlugins
 import net.seichi915.seichi915servercore.util.Implicits._
+import net.seichi915.seichi915servercore.util.Util
 import org.bukkit.{Location, Material}
 import org.bukkit.event.player.PlayerMoveEvent
 import org.bukkit.event.{EventHandler, Listener}
@@ -9,6 +11,45 @@ import org.bukkit.event.{EventHandler, Listener}
 class PlayerMoveListener extends Listener {
   @EventHandler
   def onPlayerMove(event: PlayerMoveEvent): Unit = {
+    val playerData =
+      Seichi915ServerCore.playerDataMap.getOrElse(event.getPlayer, {
+        event.getPlayer.kickPlayer("プレイヤーデータが見つかりませんでした。".toErrorMessage)
+        return
+      })
+    if (playerData.isLiquidHardenerEnabled)
+      Util
+        .calcTargetBlocks(event.getPlayer,
+                          event.getPlayer.getTargetBlock(1),
+                          playerData.getLiquidHardener)
+        .foreach { block =>
+          block.getType match {
+            case Material.LAVA =>
+              ExternalPlugins.getCoreProtectAPI.logRemoval(
+                event.getPlayer.getName,
+                block.getLocation,
+                block.getType,
+                block.getBlockData)
+              block.setType(Material.MAGMA_BLOCK)
+              ExternalPlugins.getCoreProtectAPI.logPlacement(
+                event.getPlayer.getName,
+                block.getLocation,
+                block.getType,
+                block.getBlockData)
+            case Material.WATER =>
+              ExternalPlugins.getCoreProtectAPI.logRemoval(
+                event.getPlayer.getName,
+                block.getLocation,
+                block.getType,
+                block.getBlockData)
+              block.setType(Material.PACKED_ICE)
+              ExternalPlugins.getCoreProtectAPI.logPlacement(
+                event.getPlayer.getName,
+                block.getLocation,
+                block.getType,
+                block.getBlockData)
+            case _ =>
+          }
+        }
     val firstPosition = new Location(event.getTo.getWorld,
                                      event.getTo.getBlockX + 5,
                                      5,
@@ -25,7 +66,8 @@ class PlayerMoveListener extends Listener {
                      firstPosition.getBlockX - x,
                      firstPosition.getBlockY - y,
                      firstPosition.getBlockZ - z))
-      if (block.nonNull && block.getType == Material.AIR) {
+      if (block.nonNull && Set(Material.AIR, Material.LAVA, Material.WATER)
+            .contains(block.getType)) {
         block.setType(Material.SMOOTH_STONE_SLAB)
         ExternalPlugins.getCoreProtectAPI.logPlacement(event.getPlayer.getName,
                                                        block.getLocation,

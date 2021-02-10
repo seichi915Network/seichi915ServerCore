@@ -60,7 +60,11 @@ object Database {
             resultSet.boolean("multibreak_enabled"),
             MultiBreak(resultSet.int("multibreak_width"),
                        resultSet.int("multibreak_height"),
-                       resultSet.int("multibreak_depth"))
+                       resultSet.int("multibreak_depth")),
+            resultSet.boolean("liquid_hardener_enabled"),
+            MultiBreak(resultSet.int("liquid_hardener_width"),
+                       resultSet.int("liquid_hardener_height"),
+                       resultSet.int("liquid_hardener_depth"))
         ))
         .list()
         .apply()
@@ -79,13 +83,21 @@ object Database {
            multibreak_enabled,
            multibreak_width,
            multibreak_height,
-           multibreak_depth
+           multibreak_depth,
+           liquid_hardener_enabled,
+           liquid_hardener_width,
+           liquid_hardener_height,
+           liquid_hardener_depth
            ) VALUES (
            ${player.getUniqueId},
            ${player.getName},
            0,
            1,
            0,
+           1,
+           3,
+           3,
+           3,
            1,
            3,
            3,
@@ -107,7 +119,11 @@ object Database {
              multibreak_enabled=${playerData.isMultiBreakEnabled},
              multibreak_width=${playerData.getMultiBreak.getWidth},
              multibreak_height=${playerData.getMultiBreak.getHeight},
-             multibreak_depth=${playerData.getMultiBreak.getDepth}
+             multibreak_depth=${playerData.getMultiBreak.getDepth},
+             liquid_hardener_enabled=${playerData.isLiquidHardenerEnabled},
+             liquid_hardener_width=${playerData.getLiquidHardener.getWidth},
+             liquid_hardener_height=${playerData.getLiquidHardener.getHeight},
+             liquid_hardener_depth=${playerData.getLiquidHardener.getDepth}
              WHERE uuid = ${player.getUniqueId}"""
           .update()
           .apply()
