@@ -71,6 +71,15 @@ class PlayerJoinListener extends Listener {
                     player.playMenuButtonClickSound()
                   }
                   inventory.setItem(9, openMultiBreakSettingButton)
+                  val pickaxe = new ItemStack(Material.DIAMOND_PICKAXE)
+                  val pickaxeMeta = pickaxe.getItemMeta
+                  pickaxeMeta.setUnbreakable(true)
+                  pickaxeMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES,
+                                           ItemFlag.HIDE_UNBREAKABLE)
+                  pickaxe.setItemMeta(pickaxeMeta)
+                  pickaxe.addEnchantment(Enchantment.DIG_SPEED, 5)
+                  pickaxe.addEnchantment(Enchantment.SILK_TOUCH, 1)
+                  inventory.setItem(0, pickaxe)
                 }): Runnable
               )
             case Failure(exception) =>
