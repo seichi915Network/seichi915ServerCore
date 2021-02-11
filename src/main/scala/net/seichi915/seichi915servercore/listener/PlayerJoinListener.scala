@@ -3,6 +3,7 @@ package net.seichi915.seichi915servercore.listener
 import net.seichi915.seichi915servercore.Seichi915ServerCore
 import net.seichi915.seichi915servercore.database.Database
 import net.seichi915.seichi915servercore.menu.{
+  BreakAmountRankingMenu,
   LiquidHardenerSettingMenu,
   MultiBreakSettingMenu
 }
@@ -105,6 +106,21 @@ class PlayerJoinListener extends Listener {
                     player.playMenuButtonClickSound()
                   }
                   inventory.setItem(11, openLiquidHardenerSettingButton)
+                  val openBreakAmountRankingButton =
+                    new ItemStack(Material.NETHER_STAR)
+                  val openBreakAmountRankingButtonMeta =
+                    openBreakAmountRankingButton.getItemMeta
+                  openBreakAmountRankingButtonMeta.setDisplayName(
+                    s"${ChatColor.AQUA}総整地量ランキングを開く")
+                  openBreakAmountRankingButtonMeta.addItemFlags(
+                    ItemFlag.HIDE_ATTRIBUTES)
+                  openBreakAmountRankingButton.setItemMeta(
+                    openBreakAmountRankingButtonMeta)
+                  openBreakAmountRankingButton.setClickAction { player =>
+                    BreakAmountRankingMenu.open(player)
+                    player.playMenuButtonClickSound()
+                  }
+                  inventory.setItem(34, openBreakAmountRankingButton)
                   val pickaxe = new ItemStack(Material.DIAMOND_PICKAXE)
                   val pickaxeMeta = pickaxe.getItemMeta
                   pickaxeMeta.setUnbreakable(true)
