@@ -7,6 +7,7 @@ import org.bukkit.{ChatColor, GameMode, Material}
 import org.bukkit.event.block.Action
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.event.{EventHandler, Listener}
+import org.bukkit.inventory.EquipmentSlot
 
 class PlayerInteractListener extends Listener {
   @EventHandler
@@ -28,6 +29,7 @@ class PlayerInteractListener extends Listener {
           }
         )
       case Action.RIGHT_CLICK_AIR | Action.RIGHT_CLICK_BLOCK =>
+        if (event.getHand == EquipmentSlot.OFF_HAND) return
         val playerData =
           Seichi915ServerCore.playerDataMap.getOrElse(event.getPlayer, {
             event.getPlayer.kickPlayer("プレイヤーデータが見つかりませんでした。".toErrorMessage)
