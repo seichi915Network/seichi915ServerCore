@@ -10,6 +10,15 @@ import org.bukkit.event.{EventHandler, Listener}
 import org.bukkit.inventory.EquipmentSlot
 
 class PlayerInteractListener extends Listener {
+  private val tools = List(
+    Material.DIAMOND_PICKAXE,
+    Material.DIAMOND_SHOVEL,
+    Material.DIAMOND_AXE,
+    Material.DIAMOND_SWORD,
+    Material.SHEARS,
+    Material.DIAMOND_HOE
+  )
+
   @EventHandler
   def onPlayerInteract(event: PlayerInteractEvent): Unit = {
     if (event.getPlayer.getGameMode == GameMode.CREATIVE) return
@@ -30,6 +39,8 @@ class PlayerInteractListener extends Listener {
         )
       case Action.RIGHT_CLICK_AIR | Action.RIGHT_CLICK_BLOCK =>
         if (event.getHand == EquipmentSlot.OFF_HAND) return
+        if (!tools.contains(
+              event.getPlayer.getInventory.getItemInMainHand.getType)) return
         val playerData =
           Seichi915ServerCore.playerDataMap.getOrElse(event.getPlayer, {
             event.getPlayer.kickPlayer("プレイヤーデータが見つかりませんでした。".toErrorMessage)
