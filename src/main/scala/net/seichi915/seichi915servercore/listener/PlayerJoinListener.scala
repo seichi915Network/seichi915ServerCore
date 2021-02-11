@@ -121,6 +121,16 @@ class PlayerJoinListener extends Listener {
                     player.playMenuButtonClickSound()
                   }
                   inventory.setItem(34, openBreakAmountRankingButton)
+                  val closeButton = new ItemStack(Material.BARRIER)
+                  val closeButtonMeta = closeButton.getItemMeta
+                  closeButtonMeta.setDisplayName(s"${ChatColor.RED}閉じる")
+                  closeButtonMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES)
+                  closeButton.setItemMeta(closeButtonMeta)
+                  closeButton.setClickAction { player =>
+                    player.closeInventory()
+                    player.playMenuButtonClickSound()
+                  }
+                  inventory.setItem(35, closeButton)
                   val pickaxe = new ItemStack(Material.DIAMOND_PICKAXE)
                   val pickaxeMeta = pickaxe.getItemMeta
                   pickaxeMeta.setUnbreakable(true)
