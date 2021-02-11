@@ -10,10 +10,23 @@ import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.event.{EventHandler, Listener}
 
 class BlockBreakListener extends Listener {
+  private val tools = List(
+    Material.DIAMOND_PICKAXE,
+    Material.DIAMOND_SHOVEL,
+    Material.DIAMOND_AXE,
+    Material.DIAMOND_SWORD,
+    Material.SHEARS,
+    Material.DIAMOND_HOE
+  )
+
   @EventHandler
   def onBlockBreak(event: BlockBreakEvent): Unit = {
     if (event.getPlayer.getGameMode == GameMode.CREATIVE) return
     event.setCancelled(true)
+    if (!tools.contains(event.getPlayer.getInventory.getItemInMainHand.getType)) {
+      event.getPlayer.sendActionBar("ツールを使用して掘ってください。")
+      return
+    }
     val playerData =
       Seichi915ServerCore.playerDataMap.getOrElse(event.getPlayer, {
         event.getPlayer.kickPlayer("プレイヤーデータが見つかりませんでした。".toErrorMessage)
