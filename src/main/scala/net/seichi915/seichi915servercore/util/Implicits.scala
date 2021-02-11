@@ -119,6 +119,7 @@ object Implicits {
       canBuild && canBlockBreak
     }
 
+    // TODO: 経験値テーブル作る
     def getExp: BigDecimal =
       BigDecimal(
         block.getType match {
