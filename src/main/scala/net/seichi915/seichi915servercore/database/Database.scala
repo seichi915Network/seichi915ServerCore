@@ -3,10 +3,12 @@ package net.seichi915.seichi915servercore.database
 import net.seichi915.seichi915servercore.Seichi915ServerCore
 import net.seichi915.seichi915servercore.multibreak.MultiBreak
 import net.seichi915.seichi915servercore.playerdata.PlayerData
+import org.bukkit.{Bukkit, OfflinePlayer}
 import org.bukkit.entity.Player
 import scalikejdbc._
 
 import java.io.{File, FileOutputStream}
+import java.util.UUID
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import scala.util.{Failure, Success}
@@ -71,6 +73,17 @@ object Database {
         .apply()
     }
     playerDataList.headOption
+  }
+
+  def getPlayerAndBreakAmount: List[(OfflinePlayer, Long)] = {
+    DB localTx { implicit session =>
+      sql"SELECT * FROM playerdata"
+        .map(resultSet =>
+          (Bukkit.getOfflinePlayer(UUID.fromString(resultSet.string("uuid"))),
+           resultSet.long("total_break_amount")))
+        .list()
+        .apply()
+    }
   }
 
   def createNewPlayerData(player: Player): Future[Unit] = Future {

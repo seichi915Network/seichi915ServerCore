@@ -86,7 +86,7 @@ class PlayerJoinListener extends Listener {
                     MultiBreakSettingMenu.open(player)
                     player.playMenuButtonClickSound()
                   }
-                  inventory.setItem(9, openMultiBreakSettingButton)
+                  inventory.setItem(10, openMultiBreakSettingButton)
                   val openLiquidHardenerSettingButton =
                     new ItemStack(Material.IRON_PICKAXE)
                   val openLiquidHardenerSettingButtonMeta =
@@ -104,7 +104,7 @@ class PlayerJoinListener extends Listener {
                     LiquidHardenerSettingMenu.open(player)
                     player.playMenuButtonClickSound()
                   }
-                  inventory.setItem(10, openLiquidHardenerSettingButton)
+                  inventory.setItem(11, openLiquidHardenerSettingButton)
                   val pickaxe = new ItemStack(Material.DIAMOND_PICKAXE)
                   val pickaxeMeta = pickaxe.getItemMeta
                   pickaxeMeta.setUnbreakable(true)
@@ -114,6 +114,7 @@ class PlayerJoinListener extends Listener {
                   pickaxe.addEnchantment(Enchantment.DIG_SPEED, 5)
                   pickaxe.addEnchantment(Enchantment.SILK_TOUCH, 1)
                   inventory.setItem(0, pickaxe)
+                  event.getPlayer.setPlayerInfoSkull()
                   val scoreboardManager = Bukkit.getScoreboardManager
                   val scoreboard = scoreboardManager.getNewScoreboard
                   event.getPlayer.setScoreboard(scoreboard)

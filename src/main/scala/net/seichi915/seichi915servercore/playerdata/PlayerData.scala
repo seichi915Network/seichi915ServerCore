@@ -2,6 +2,7 @@ package net.seichi915.seichi915servercore.playerdata
 
 import net.seichi915.seichi915servercore.database.Database
 import net.seichi915.seichi915servercore.multibreak.MultiBreak
+import org.bukkit.OfflinePlayer
 import org.bukkit.entity.Player
 
 import scala.concurrent.Future
@@ -51,6 +52,14 @@ case class PlayerData(var totalBreakAmount: Long,
 
   def setLiquidHardener(liquidHardener: MultiBreak): Unit =
     this.liquidHardener = liquidHardener
+
+  def getRanking(player: Player): Int = {
+    Database.getPlayerAndBreakAmount.sortBy(_._2).reverse.zipWithIndex.foreach {
+      case ((offlinePlayer: OfflinePlayer, _), index: Int) =>
+        if (offlinePlayer.getUniqueId == player.getUniqueId) return index + 1
+    }
+    0
+  }
 
   def getMaxMultiBreakSize: Int =
     if (getTotalBreakAmount >= 10000000000L) 17

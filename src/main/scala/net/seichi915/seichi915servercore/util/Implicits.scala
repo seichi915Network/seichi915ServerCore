@@ -1,5 +1,6 @@
 package net.seichi915.seichi915servercore.util
 
+import cats.effect.IO
 import com.sk89q.worldedit.bukkit.BukkitAdapter
 import com.sk89q.worldguard.WorldGuard
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin
@@ -11,14 +12,15 @@ import net.seichi915.seichi915servercore.meta.menu.ClickAction
 import net.seichi915.seichi915servercore.playerdata.PlayerData
 import net.seichi915.seichi915servercore.tooltype.ToolType._
 import org.bukkit.block.Block
-import org.bukkit.{ChatColor, Material, NamespacedKey, Sound}
+import org.bukkit.{Bukkit, ChatColor, Material, NamespacedKey, Sound}
 import org.bukkit.entity.Player
-import org.bukkit.inventory.{Inventory, ItemStack}
+import org.bukkit.inventory.meta.SkullMeta
+import org.bukkit.inventory.{Inventory, ItemFlag, ItemStack}
 import org.bukkit.persistence.PersistentDataType
 import org.bukkit.scoreboard.DisplaySlot
 
 import java.util.UUID
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 import scala.jdk.CollectionConverters._
 
 object Implicits {
@@ -98,6 +100,40 @@ object Implicits {
       objective.getScore("       ").setScore(11)
       objective.getScore(playerData.getTotalBreakAmount.toString).setScore(12)
       objective.getScore(s"${ChatColor.GREEN}総整地量:").setScore(13)
+    }
+
+    def setPlayerInfoSkull(): Unit = {
+      val playerData =
+        Seichi915ServerCore.playerDataMap.getOrElse(player, {
+          player.kickPlayer("プレイヤーデータが見つかりませんでした。".toErrorMessage)
+          return
+        })
+      val task = IO {
+        val itemStack = new ItemStack(Material.PLAYER_HEAD)
+        val skullMeta = itemStack.getItemMeta.asInstanceOf[SkullMeta]
+        skullMeta.setOwningPlayer(Bukkit.getOfflinePlayer(player.getUniqueId))
+        skullMeta.setDisplayName(s"${ChatColor.AQUA}${player.getName} さんの情報")
+        skullMeta.setLore(
+          List(
+            s"${ChatColor.GREEN}総整地量: ${ChatColor.WHITE}${playerData.getTotalBreakAmount}",
+            "",
+            s"${ChatColor.GREEN}Rank: ${ChatColor.WHITE}${playerData.getRank}",
+            s"${ChatColor.GREEN}Exp: ${ChatColor.WHITE}${playerData.getExp}/2000.00",
+            "",
+            s"${ChatColor.GREEN}総整地量ランキング: ${ChatColor.WHITE}${playerData.getRanking(player)}位",
+            "クリックで更新できます。"
+          ).map(str => s"${ChatColor.WHITE}$str").asJava
+        )
+        skullMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES)
+        itemStack.setItemMeta(skullMeta)
+        itemStack.setClickAction { player =>
+          player.playMenuButtonClickSound()
+          player.setPlayerInfoSkull()
+        }
+        player.getInventory.setItem(9, itemStack)
+      }
+      val contextShift = IO.contextShift(ExecutionContext.global)
+      IO.shift(contextShift).flatMap(_ => task).unsafeRunSync()
     }
 
     def playChangeMaxMultiBreakSizeSound(): Unit =
