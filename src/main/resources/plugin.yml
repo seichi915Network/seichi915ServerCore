@@ -6,10 +6,15 @@ load: POSTWORLD
 authors: [stouma915]
 description: "seichi915Server コアプラグイン"
 website: https://www.seichi915.net
-commands: {}
 depend:
   - CoreProtect
   - WorldGuard
+commands:
+  fly:
+    description: Toggle flying
+    usage: /fly
+    permission: seichi915servercore.command.fly
+    permission-message: "§c権限が不足しています。"
 permissions:
   seichi915servercore.*:
     description: Grant all permissions of seichi915ServerCore
@@ -17,4 +22,8 @@ permissions:
       seichi915servercore.command.*: true
   seichi915servercore.command.*:
     description: Grant all command permissions of seichi915ServerCore
-    children: {}
+    children:
+      seichi915servercore.command.fly: true
+  seichi915servercore.command.fly:
+    description: Permission to use /fly
+    default: true

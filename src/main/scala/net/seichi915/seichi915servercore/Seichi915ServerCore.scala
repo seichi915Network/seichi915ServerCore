@@ -1,5 +1,6 @@
 package net.seichi915.seichi915servercore
 
+import net.seichi915.seichi915servercore.command._
 import net.seichi915.seichi915servercore.database.Database
 import net.seichi915.seichi915servercore.listener._
 import net.seichi915.seichi915servercore.meta.menu.ClickAction
@@ -7,6 +8,7 @@ import net.seichi915.seichi915servercore.playerdata.PlayerData
 import net.seichi915.seichi915servercore.task._
 import org.bukkit.Bukkit
 import org.bukkit.boss.BossBar
+import org.bukkit.command.{CommandExecutor, TabCompleter}
 import org.bukkit.entity.Player
 import org.bukkit.plugin.java.JavaPlugin
 import org.bukkit.scheduler.BukkitRunnable
@@ -47,6 +49,15 @@ class Seichi915ServerCore extends JavaPlugin {
       new PlayerSeichiListener,
       new PlayerSwapHandItemsListener
     ).foreach(Bukkit.getPluginManager.registerEvents(_, this))
+    Map(
+      "fly" -> new FlyCommand
+    ).foreach {
+      case (commandName: String, commandExecutor: CommandExecutor) =>
+        Bukkit.getPluginCommand(commandName).setExecutor(commandExecutor)
+        Bukkit
+          .getPluginCommand(commandName)
+          .setTabCompleter(commandExecutor.asInstanceOf[TabCompleter])
+    }
     Map(
       (6000, 6000) -> new PlayerDataSaveTask,
       (20, 20) -> new ScoreboardUpdateTask
