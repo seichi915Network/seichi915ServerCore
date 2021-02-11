@@ -8,7 +8,8 @@ import scala.concurrent.Future
 
 case class PlayerData(var totalBreakAmount: Long,
                       var rank: Int,
-                      var exp: Int,
+                      var exp: BigDecimal,
+                      var expBoost: BigDecimal,
                       var multiBreakEnabled: Boolean,
                       var multiBreak: MultiBreak,
                       var liquidHardenerEnabled: Boolean,
@@ -22,9 +23,15 @@ case class PlayerData(var totalBreakAmount: Long,
 
   def setRank(rank: Int): Unit = this.rank = rank
 
-  def getExp: Int = exp
+  def getExp: BigDecimal = exp
 
-  def setExp(exp: Int): Unit = this.exp = exp
+  def setExp(exp: BigDecimal): Unit =
+    this.exp = if (getRank < 500) exp else BigDecimal(0.0)
+
+  def getExpBoost: BigDecimal = if (getRank < 500) expBoost else BigDecimal(0.0)
+
+  def setExpBoost(expBoost: BigDecimal): Unit =
+    this.expBoost = if (getRank < 500) expBoost else BigDecimal(0.0)
 
   def isMultiBreakEnabled: Boolean = multiBreakEnabled
 
@@ -54,6 +61,8 @@ case class PlayerData(var totalBreakAmount: Long,
     else if (getTotalBreakAmount >= 100000L) 7
     else if (getTotalBreakAmount >= 10000L) 5
     else 3
+
+  def canRankUp: Boolean = getRank < 500 && getExp >= BigDecimal(2000.0)
 
   def save(player: Player): Future[Unit] = Database.savePlayerData(player, this)
 }

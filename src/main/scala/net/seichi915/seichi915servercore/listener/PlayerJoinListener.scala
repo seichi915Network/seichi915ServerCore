@@ -54,6 +54,18 @@ class PlayerJoinListener extends Listener {
               Bukkit.getScheduler.runTask(
                 Seichi915ServerCore.instance,
                 (() => {
+                  val playerData =
+                    Seichi915ServerCore.playerDataMap(event.getPlayer)
+                  while (playerData.canRankUp) {
+                    event.getPlayer.playRankUpSound()
+                    event.getPlayer.sendMessage(
+                      s"ランクアップしました。(${ChatColor.YELLOW}${playerData.getRank} ${ChatColor.RESET} -> ${ChatColor.GREEN}${playerData.getRank + 1}${ChatColor.RESET})".toSuccessMessage)
+                    playerData.setRank(playerData.getRank + 1)
+                    playerData.setExp(playerData.getExp - BigDecimal(2000.0))
+                  }
+                  event.getPlayer.setLevel(playerData.getRank)
+                  event.getPlayer.setExp(
+                    (playerData.getExp / BigDecimal(2000f)).floatValue)
                   val inventory = event.getPlayer.getInventory
                   inventory.clear()
                   val openMultiBreakSettingButton =

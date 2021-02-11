@@ -63,7 +63,7 @@ object Implicits {
     def playChangeMaxMultiBreakSizeSound(): Unit =
       player.playSound(player.getLocation, Sound.ENTITY_PLAYER_LEVELUP, 1, 1)
 
-    def playLevelUpSound(): Unit =
+    def playRankUpSound(): Unit =
       player.playSound(player.getLocation, Sound.ENTITY_PLAYER_LEVELUP, 1, 0)
   }
 
@@ -115,6 +115,13 @@ object Implicits {
         Flags.BLOCK_BREAK)
       canBuild && canBlockBreak
     }
+
+    def getExp: BigDecimal =
+      BigDecimal(
+        block.getType match {
+          case _ => 1.0
+        }
+      )
 
     def getUsableToolType: ToolType =
       block.getType match {

@@ -56,7 +56,8 @@ object Database {
           PlayerData(
             resultSet.long("total_break_amount"),
             resultSet.int("rank"),
-            resultSet.int("exp"),
+            BigDecimal(resultSet.double("exp")),
+            BigDecimal(1.0),
             resultSet.boolean("multibreak_enabled"),
             MultiBreak(resultSet.int("multibreak_width"),
                        resultSet.int("multibreak_height"),
@@ -115,7 +116,7 @@ object Database {
              name=${player.getName},
              total_break_amount=${playerData.getTotalBreakAmount},
              rank=${playerData.getRank},
-             exp=${playerData.getExp},
+             exp=${playerData.getExp.doubleValue},
              multibreak_enabled=${playerData.isMultiBreakEnabled},
              multibreak_width=${playerData.getMultiBreak.getWidth},
              multibreak_height=${playerData.getMultiBreak.getHeight},
