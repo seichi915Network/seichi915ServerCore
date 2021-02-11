@@ -114,6 +114,10 @@ class PlayerJoinListener extends Listener {
                   pickaxe.addEnchantment(Enchantment.DIG_SPEED, 5)
                   pickaxe.addEnchantment(Enchantment.SILK_TOUCH, 1)
                   inventory.setItem(0, pickaxe)
+                  val scoreboardManager = Bukkit.getScoreboardManager
+                  val scoreboard = scoreboardManager.getNewScoreboard
+                  event.getPlayer.setScoreboard(scoreboard)
+                  Seichi915ServerCore.scoreboardMap += event.getPlayer -> scoreboard
                 }): Runnable
               )
             case Failure(exception) =>

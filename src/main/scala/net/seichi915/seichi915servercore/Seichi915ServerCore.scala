@@ -10,6 +10,7 @@ import org.bukkit.boss.BossBar
 import org.bukkit.entity.Player
 import org.bukkit.plugin.java.JavaPlugin
 import org.bukkit.scheduler.BukkitRunnable
+import org.bukkit.scoreboard.Scoreboard
 
 import java.util.UUID
 import scala.collection.mutable
@@ -22,6 +23,8 @@ object Seichi915ServerCore {
   var playerDataMap: mutable.HashMap[Player, PlayerData] = mutable.HashMap()
   var clickActionMap: mutable.HashMap[UUID, ClickAction] = mutable.HashMap()
   var bossBarMap: mutable.HashMap[Player, BossBar] = mutable.HashMap()
+  var scoreboardMap: mutable.HashMap[Player, Scoreboard] = mutable.HashMap()
+  var previousBreakAmountMap: mutable.HashMap[Player, Long] = mutable.HashMap()
 }
 
 class Seichi915ServerCore extends JavaPlugin {
@@ -45,7 +48,8 @@ class Seichi915ServerCore extends JavaPlugin {
       new PlayerSwapHandItemsListener
     ).foreach(Bukkit.getPluginManager.registerEvents(_, this))
     Map(
-      (6000, 6000) -> new PlayerDataSaveTask
+      (6000, 6000) -> new PlayerDataSaveTask,
+      (20, 20) -> new ScoreboardUpdateTask
     ).foreach {
       case ((delay: Int, period: Int), bukkitRunnable: BukkitRunnable) =>
         bukkitRunnable.runTaskTimer(this, delay, period)

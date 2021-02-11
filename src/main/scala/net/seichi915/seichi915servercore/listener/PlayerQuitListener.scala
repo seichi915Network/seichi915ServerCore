@@ -6,6 +6,7 @@ import org.bukkit.event.player.PlayerQuitEvent
 import org.bukkit.event.{EventHandler, Listener}
 
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.jdk.CollectionConverters._
 import scala.util.{Failure, Success}
 
 class PlayerQuitListener extends Listener {
@@ -18,7 +19,17 @@ class PlayerQuitListener extends Listener {
           new NamespacedKey(Seichi915ServerCore.instance,
                             s"${event.getPlayer.getName}_BossBar"))
         Seichi915ServerCore.bossBarMap.remove(event.getPlayer)
-      case _ =>
+      case None =>
+    }
+    Seichi915ServerCore.scoreboardMap.get(event.getPlayer) match {
+      case Some(scoreboard) =>
+        scoreboard.getObjectives.asScala.foreach(_.unregister())
+      case None =>
+    }
+    Seichi915ServerCore.previousBreakAmountMap.get(event.getPlayer) match {
+      case Some(_) =>
+        Seichi915ServerCore.previousBreakAmountMap.remove(event.getPlayer)
+      case None =>
     }
     Seichi915ServerCore.playerDataMap
       .getOrElse(event.getPlayer, {

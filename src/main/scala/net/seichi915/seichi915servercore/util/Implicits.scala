@@ -15,9 +15,11 @@ import org.bukkit.{ChatColor, Material, NamespacedKey, Sound}
 import org.bukkit.entity.Player
 import org.bukkit.inventory.{Inventory, ItemStack}
 import org.bukkit.persistence.PersistentDataType
+import org.bukkit.scoreboard.DisplaySlot
 
 import java.util.UUID
 import scala.concurrent.Future
+import scala.jdk.CollectionConverters._
 
 object Implicits {
   implicit class AnyOps(any: Any) {
@@ -59,6 +61,44 @@ object Implicits {
                        Sound.BLOCK_STONE_BUTTON_CLICK_ON,
                        1,
                        0)
+
+    def updateScoreboard(): Unit = {
+      val playerData =
+        Seichi915ServerCore.playerDataMap.getOrElse(player, {
+          player.kickPlayer("プレイヤーデータが見つかりませんでした。".toErrorMessage)
+          return
+        })
+      val scoreboard =
+        Seichi915ServerCore.scoreboardMap.getOrElse(player, return )
+      scoreboard.getObjectives.asScala.foreach(_.unregister())
+      val breakAmountPerSecond =
+        Seichi915ServerCore.previousBreakAmountMap.get(player) match {
+          case Some(breakAmount) =>
+            Seichi915ServerCore.previousBreakAmountMap
+              .update(player, playerData.getTotalBreakAmount)
+            playerData.getTotalBreakAmount - breakAmount
+          case None =>
+            Seichi915ServerCore.previousBreakAmountMap += player -> playerData.getTotalBreakAmount
+            0
+        }
+      val objective =
+        scoreboard.registerNewObjective(player.getName, "dummy", "プレイヤー情報")
+      objective.setDisplaySlot(DisplaySlot.SIDEBAR)
+      objective.getScore(s"${ChatColor.GREEN}www.seichi915.net").setScore(0)
+      objective.getScore("   ").setScore(1)
+      objective.getScore("    ").setScore(2)
+      objective.getScore(s"${playerData.getExp} / 2000.00").setScore(3)
+      objective.getScore(s"${ChatColor.GREEN}Exp:").setScore(4)
+      objective.getScore("     ").setScore(5)
+      objective.getScore(playerData.getRank.toString).setScore(6)
+      objective.getScore(s"${ChatColor.GREEN}Rank:").setScore(7)
+      objective.getScore("      ").setScore(8)
+      objective.getScore(s"${breakAmountPerSecond}ブロック/秒").setScore(9)
+      objective.getScore(s"${ChatColor.GREEN}破壊ペース:").setScore(10)
+      objective.getScore("       ").setScore(11)
+      objective.getScore(playerData.getTotalBreakAmount.toString).setScore(12)
+      objective.getScore(s"${ChatColor.GREEN}総整地量:").setScore(13)
+    }
 
     def playChangeMaxMultiBreakSizeSound(): Unit =
       player.playSound(player.getLocation, Sound.ENTITY_PLAYER_LEVELUP, 1, 1)
