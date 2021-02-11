@@ -39,7 +39,8 @@ class Seichi915ServerCore extends JavaPlugin {
       new PlayerInteractListener,
       new PlayerJoinListener,
       new PlayerMoveListener,
-      new PlayerQuitListener
+      new PlayerQuitListener,
+      new PlayerSeichiListener
     ).foreach(Bukkit.getPluginManager.registerEvents(_, this))
     Map(
       (6000, 6000) -> new PlayerDataSaveTask

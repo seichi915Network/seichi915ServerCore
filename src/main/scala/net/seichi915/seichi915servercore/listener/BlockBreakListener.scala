@@ -1,10 +1,11 @@
 package net.seichi915.seichi915servercore.listener
 
 import net.seichi915.seichi915servercore.Seichi915ServerCore
+import net.seichi915.seichi915servercore.event.PlayerSeichiEvent
 import net.seichi915.seichi915servercore.external.ExternalPlugins
 import net.seichi915.seichi915servercore.util.Implicits._
 import net.seichi915.seichi915servercore.util.Util
-import org.bukkit.{ChatColor, Material}
+import org.bukkit.{Bukkit, ChatColor, Material}
 import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.event.{EventHandler, Listener}
 
@@ -26,17 +27,21 @@ class BlockBreakListener extends Listener {
                               playerData.getMultiBreak)
       else List(event.getBlock)
     targetBlocks.foreach { block =>
-      ExternalPlugins.getCoreProtectAPI.logRemoval(event.getPlayer.getName,
-                                                   block.getLocation,
-                                                   block.getType,
-                                                   block.getBlockData)
-      block.setType(Material.AIR)
-      val previousMaxMultiBreakSize = playerData.getMaxMultiBreakSize
-      playerData.setTotalBreakAmount(playerData.getTotalBreakAmount + 1)
-      if (playerData.getMaxMultiBreakSize != previousMaxMultiBreakSize) {
-        event.getPlayer.sendMessage(
-          s"マルチブレイクのサイズ上限が ${ChatColor.GREEN}${playerData.getMaxMultiBreakSize} ${ChatColor.RESET}になりました。".toSuccessMessage)
-        event.getPlayer.playChangeMaxMultiBreakSizeSound()
+      val playerSeichiEvent = new PlayerSeichiEvent(event.getPlayer, block)
+      Bukkit.getPluginManager.callEvent(playerSeichiEvent)
+      if (!playerSeichiEvent.isCancelled) {
+        ExternalPlugins.getCoreProtectAPI.logRemoval(event.getPlayer.getName,
+                                                     block.getLocation,
+                                                     block.getType,
+                                                     block.getBlockData)
+        block.setType(Material.AIR)
+        val previousMaxMultiBreakSize = playerData.getMaxMultiBreakSize
+        playerData.setTotalBreakAmount(playerData.getTotalBreakAmount + 1)
+        if (playerData.getMaxMultiBreakSize != previousMaxMultiBreakSize) {
+          event.getPlayer.sendMessage(
+            s"マルチブレイクのサイズ上限が ${ChatColor.GREEN}${playerData.getMaxMultiBreakSize} ${ChatColor.RESET}になりました。".toSuccessMessage)
+          event.getPlayer.playChangeMaxMultiBreakSizeSound()
+        }
       }
     }
     Seichi915ServerCore.bossBarMap
