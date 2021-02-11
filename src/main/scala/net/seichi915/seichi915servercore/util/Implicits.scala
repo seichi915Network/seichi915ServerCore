@@ -65,6 +65,9 @@ object Implicits {
 
     def playRankUpSound(): Unit =
       player.playSound(player.getLocation, Sound.ENTITY_PLAYER_LEVELUP, 1, 0)
+
+    def playToggleMultiBreakSound(): Unit =
+      player.playSound(player.getLocation, Sound.UI_BUTTON_CLICK, 1, 1)
   }
 
   implicit class StringOps(string: String) {
