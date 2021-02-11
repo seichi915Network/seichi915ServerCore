@@ -9,7 +9,7 @@ import net.seichi915.seichi915servercore.menu.{
 import net.seichi915.seichi915servercore.util.Implicits._
 import org.bukkit.boss.{BarColor, BarStyle}
 import org.bukkit.enchantments.Enchantment
-import org.bukkit.{Bukkit, ChatColor, Material, NamespacedKey}
+import org.bukkit.{Bukkit, ChatColor, GameMode, Material, NamespacedKey}
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.{EventHandler, Listener}
 import org.bukkit.inventory.{ItemFlag, ItemStack}
@@ -54,6 +54,7 @@ class PlayerJoinListener extends Listener {
               Bukkit.getScheduler.runTask(
                 Seichi915ServerCore.instance,
                 (() => {
+                  event.getPlayer.setGameMode(GameMode.SURVIVAL)
                   val playerData =
                     Seichi915ServerCore.playerDataMap(event.getPlayer)
                   while (playerData.canRankUp) {

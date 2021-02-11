@@ -3,12 +3,13 @@ package net.seichi915.seichi915servercore.listener
 import net.seichi915.seichi915servercore.Seichi915ServerCore
 import net.seichi915.seichi915servercore.event.PlayerSeichiEvent
 import net.seichi915.seichi915servercore.util.Implicits._
-import org.bukkit.ChatColor
+import org.bukkit.{ChatColor, GameMode}
 import org.bukkit.event.{EventHandler, Listener}
 
 class PlayerSeichiListener extends Listener {
   @EventHandler
   def onPlayerSeichi(event: PlayerSeichiEvent): Unit = {
+    if (event.getPlayer.getGameMode == GameMode.CREATIVE) return
     val playerData =
       Seichi915ServerCore.playerDataMap.getOrElse(event.getPlayer, {
         event.getPlayer.kickPlayer("プレイヤーデータが見つかりませんでした。".toErrorMessage)

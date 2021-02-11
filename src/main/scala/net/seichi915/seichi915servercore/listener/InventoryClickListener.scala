@@ -19,7 +19,8 @@ class InventoryClickListener extends Listener {
     if (!event.getWhoClicked.isInstanceOf[Player]) return
     if (event.getWhoClicked
           .asInstanceOf[Player]
-          .getGameMode != GameMode.CREATIVE) event.setCancelled(true)
+          .getGameMode == GameMode.CREATIVE) return
+    event.setCancelled(true)
     if (event.getCurrentItem.getItemMeta.isNull) return
     if (event.getCurrentItem.getItemMeta.getPersistentDataContainer.isNull)
       return
@@ -32,6 +33,5 @@ class InventoryClickListener extends Listener {
         PersistentDataType.STRING))
     val clickAction = Seichi915ServerCore.clickActionMap(uuid)
     clickAction.onClick(event.getWhoClicked.asInstanceOf[Player])
-    event.setCancelled(true)
   }
 }

@@ -5,7 +5,7 @@ import net.seichi915.seichi915servercore.event.PlayerSeichiEvent
 import net.seichi915.seichi915servercore.external.ExternalPlugins
 import net.seichi915.seichi915servercore.util.Implicits._
 import net.seichi915.seichi915servercore.util.Util
-import org.bukkit.{Bukkit, ChatColor, Material}
+import org.bukkit.{Bukkit, ChatColor, GameMode, Material}
 import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.event.{EventHandler, Listener}
 
@@ -13,6 +13,7 @@ class BlockBreakListener extends Listener {
   @EventHandler
   def onBlockBreak(event: BlockBreakEvent): Unit = {
     event.setCancelled(true)
+    if (event.getPlayer.getGameMode == GameMode.CREATIVE) return
     val playerData =
       Seichi915ServerCore.playerDataMap.getOrElse(event.getPlayer, {
         event.getPlayer.kickPlayer("プレイヤーデータが見つかりませんでした。".toErrorMessage)

@@ -4,13 +4,14 @@ import net.seichi915.seichi915servercore.Seichi915ServerCore
 import net.seichi915.seichi915servercore.external.ExternalPlugins
 import net.seichi915.seichi915servercore.util.Implicits._
 import net.seichi915.seichi915servercore.util.Util
-import org.bukkit.{Location, Material}
+import org.bukkit.{GameMode, Location, Material}
 import org.bukkit.event.player.PlayerMoveEvent
 import org.bukkit.event.{EventHandler, Listener}
 
 class PlayerMoveListener extends Listener {
   @EventHandler
   def onPlayerMove(event: PlayerMoveEvent): Unit = {
+    if (event.getPlayer.getGameMode == GameMode.CREATIVE) return
     val playerData =
       Seichi915ServerCore.playerDataMap.getOrElse(event.getPlayer, {
         event.getPlayer.kickPlayer("プレイヤーデータが見つかりませんでした。".toErrorMessage)
