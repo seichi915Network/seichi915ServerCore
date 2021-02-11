@@ -12,8 +12,8 @@ import org.bukkit.event.{EventHandler, Listener}
 class BlockBreakListener extends Listener {
   @EventHandler
   def onBlockBreak(event: BlockBreakEvent): Unit = {
-    event.setCancelled(true)
     if (event.getPlayer.getGameMode == GameMode.CREATIVE) return
+    event.setCancelled(true)
     val playerData =
       Seichi915ServerCore.playerDataMap.getOrElse(event.getPlayer, {
         event.getPlayer.kickPlayer("プレイヤーデータが見つかりませんでした。".toErrorMessage)
