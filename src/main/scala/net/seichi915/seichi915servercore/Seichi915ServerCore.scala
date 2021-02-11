@@ -2,7 +2,7 @@ package net.seichi915.seichi915servercore
 
 import net.seichi915.seichi915servercore.database.Database
 import net.seichi915.seichi915servercore.listener._
-import net.seichi915.seichi915servercore.menu.ClickAction
+import net.seichi915.seichi915servercore.meta.menu.ClickAction
 import net.seichi915.seichi915servercore.playerdata.PlayerData
 import net.seichi915.seichi915servercore.task._
 import org.bukkit.Bukkit

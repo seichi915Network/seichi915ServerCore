@@ -3,6 +3,7 @@ package net.seichi915.seichi915servercore.menu
 import cats.effect.IO
 import net.seichi915.seichi915servercore.Seichi915ServerCore
 import net.seichi915.seichi915servercore.inventory.Seichi915ServerInventoryHolder
+import net.seichi915.seichi915servercore.meta.menu.Menu
 import net.seichi915.seichi915servercore.multibreak.MultiBreak
 import net.seichi915.seichi915servercore.util.Implicits._
 import org.bukkit.{Bukkit, ChatColor, Material}

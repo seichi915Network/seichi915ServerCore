@@ -1,4 +1,4 @@
-package net.seichi915.seichi915servercore.menu
+package net.seichi915.seichi915servercore.meta.menu
 
 import org.bukkit.entity.Player
 

@@ -7,7 +7,7 @@ import com.sk89q.worldguard.protection.flags.Flags
 import net.seichi915.seichi915servercore.Seichi915ServerCore
 import net.seichi915.seichi915servercore.database.Database
 import net.seichi915.seichi915servercore.inventory.Seichi915ServerInventoryHolder
-import net.seichi915.seichi915servercore.menu.ClickAction
+import net.seichi915.seichi915servercore.meta.menu.ClickAction
 import net.seichi915.seichi915servercore.playerdata.PlayerData
 import net.seichi915.seichi915servercore.tooltype.ToolType._
 import org.bukkit.block.Block
