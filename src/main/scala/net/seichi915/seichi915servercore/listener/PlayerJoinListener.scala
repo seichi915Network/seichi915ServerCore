@@ -10,12 +10,14 @@ import net.seichi915.seichi915servercore.menu.{
 import net.seichi915.seichi915servercore.util.Implicits._
 import org.bukkit.boss.{BarColor, BarStyle}
 import org.bukkit.enchantments.Enchantment
+import org.bukkit.entity.Player
 import org.bukkit.{Bukkit, ChatColor, GameMode, Material, NamespacedKey}
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.{EventHandler, Listener}
 import org.bukkit.inventory.{ItemFlag, ItemStack}
 
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.jdk.CollectionConverters._
 import scala.util.{Failure, Success}
 
 class PlayerJoinListener extends Listener {
@@ -121,6 +123,34 @@ class PlayerJoinListener extends Listener {
                     player.playMenuButtonClickSound()
                   }
                   inventory.setItem(34, openBreakAmountRankingButton)
+                  def setToggleFlyingButton(player: Player): Unit = {
+                    val toggleFlyingButton = new ItemStack(Material.ELYTRA)
+                    val toggleFlyingButtonMeta = toggleFlyingButton.getItemMeta
+                    toggleFlyingButtonMeta.setDisplayName(
+                      s"${ChatColor.AQUA}Fly切り替え")
+                    toggleFlyingButtonMeta.setLore(
+                      List(
+                        s"現在Flyは ${if (player.isFlying) s"${ChatColor.GREEN}オン"
+                        else s"${ChatColor.RED}オフ"} ${ChatColor.WHITE}になっています。",
+                        "クリックでオン・オフを切り替えられます。"
+                      ).map(str => s"${ChatColor.WHITE}$str").asJava)
+                    toggleFlyingButtonMeta.addItemFlags(
+                      ItemFlag.HIDE_ATTRIBUTES)
+                    toggleFlyingButton.setItemMeta(toggleFlyingButtonMeta)
+                    toggleFlyingButton.setClickAction { _ =>
+                      if (player.isFlying) {
+                        player.setFlying(false)
+                        player.setAllowFlight(false)
+                      } else {
+                        player.setAllowFlight(true)
+                        player.setFlying(true)
+                      }
+                      player.playMenuButtonClickSound()
+                      setToggleFlyingButton(player)
+                    }
+                    player.getInventory.setItem(33, toggleFlyingButton)
+                  }
+                  setToggleFlyingButton(event.getPlayer)
                   val closeButton = new ItemStack(Material.BARRIER)
                   val closeButtonMeta = closeButton.getItemMeta
                   closeButtonMeta.setDisplayName(s"${ChatColor.RED}閉じる")

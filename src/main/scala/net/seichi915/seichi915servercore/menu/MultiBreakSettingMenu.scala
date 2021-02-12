@@ -203,6 +203,6 @@ object MultiBreakSettingMenu extends Menu {
       inventory.setItem(24, deduceDepthButton)
     }
     val contextShift = IO.contextShift(ExecutionContext.global)
-    IO.shift(contextShift).flatMap(_ => task).unsafeRunSync()
+    IO.shift(contextShift).flatMap(_ => task).unsafeRunAsyncAndForget()
   }
 }
