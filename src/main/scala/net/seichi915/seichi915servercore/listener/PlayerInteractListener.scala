@@ -24,7 +24,8 @@ class PlayerInteractListener extends Listener {
     if (event.getPlayer.getGameMode == GameMode.CREATIVE) return
     event.getAction match {
       case Action.LEFT_CLICK_BLOCK =>
-        if (event.getPlayer.getInventory.getItemInMainHand.isNull || event.getPlayer.getInventory.getItemInMainHand.getType == Material.AIR)
+        if (event.getPlayer.getInventory.getItemInMainHand.isNull || !tools
+              .contains(event.getPlayer.getInventory.getItemInMainHand.getType))
           return
         event.getPlayer.getInventory.getItemInMainHand.setType(
           event.getClickedBlock.getUsableToolType match {
