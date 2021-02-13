@@ -27,12 +27,13 @@ case class PlayerData(var totalBreakAmount: Long,
   def getExp: BigDecimal = exp
 
   def setExp(exp: BigDecimal): Unit =
-    this.exp = if (getRank < 500) exp else BigDecimal(0.0)
+    this.exp = if (getRank < 1000) exp else BigDecimal(0.0)
 
-  def getExpBoost: BigDecimal = if (getRank < 500) expBoost else BigDecimal(0.0)
+  def getExpBoost: BigDecimal =
+    if (getRank < 1000) expBoost else BigDecimal(0.0)
 
   def setExpBoost(expBoost: BigDecimal): Unit =
-    this.expBoost = if (getRank < 500) expBoost else BigDecimal(0.0)
+    this.expBoost = if (getRank < 1000) expBoost else BigDecimal(0.0)
 
   def isMultiBreakEnabled: Boolean = multiBreakEnabled
 
@@ -71,7 +72,7 @@ case class PlayerData(var totalBreakAmount: Long,
     else if (getTotalBreakAmount >= 10000L) 5
     else 3
 
-  def canRankUp: Boolean = getRank < 500 && getExp >= BigDecimal(2000.0)
+  def canRankUp: Boolean = getRank < 1000 && getExp >= BigDecimal(2000.0)
 
   def save(player: Player): Future[Unit] = Database.savePlayerData(player, this)
 }
