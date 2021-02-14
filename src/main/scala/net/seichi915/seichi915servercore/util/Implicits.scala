@@ -72,7 +72,6 @@ object Implicits {
         })
       val scoreboard =
         Seichi915ServerCore.scoreboardMap.getOrElse(player, return )
-      scoreboard.getObjectives.asScala.foreach(_.unregister())
       val breakAmountPerSecond =
         Seichi915ServerCore.previousBreakAmountMap.get(player) match {
           case Some(breakAmount) =>
@@ -83,8 +82,13 @@ object Implicits {
             Seichi915ServerCore.previousBreakAmountMap += player -> playerData.getTotalBreakAmount
             0
         }
+      val stringBuilder = new StringBuilder(
+        UUID.randomUUID.toString.replaceAll("-", ""))
+      stringBuilder.setLength(16)
       val objective =
-        scoreboard.registerNewObjective(player.getName, "dummy", "プレイヤー情報")
+        scoreboard.registerNewObjective(stringBuilder.toString,
+                                        "dummy",
+                                        "プレイヤー情報")
       objective.setDisplaySlot(DisplaySlot.SIDEBAR)
       objective.getScore(s"${ChatColor.GREEN}www.seichi915.net").setScore(0)
       objective.getScore("   ").setScore(1)
