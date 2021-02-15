@@ -166,6 +166,7 @@ object Implicits {
 
   implicit class BlockOps(block: Block) {
     import Material._
+
     private val unbreakableMaterials = List(
       AIR,
       COMMAND_BLOCK,
