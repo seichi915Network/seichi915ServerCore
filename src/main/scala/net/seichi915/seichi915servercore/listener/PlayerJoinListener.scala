@@ -2,6 +2,7 @@ package net.seichi915.seichi915servercore.listener
 
 import net.seichi915.seichi915servercore.Seichi915ServerCore
 import net.seichi915.seichi915servercore.database.Database
+import net.seichi915.seichi915servercore.external.ExternalPlugins
 import net.seichi915.seichi915servercore.menu._
 import net.seichi915.seichi915servercore.util.Implicits._
 import org.bukkit.boss.{BarColor, BarStyle}
@@ -166,6 +167,57 @@ class PlayerJoinListener extends Listener {
                     player.getInventory.setItem(33, toggleFlyingButton)
                   }
                   setToggleFlyingButton(event.getPlayer)
+                  val teleportToSeichiWorldButton =
+                    new ItemStack(Material.GRASS_BLOCK)
+                  val teleportToSeichiWorldButtonMeta =
+                    teleportToSeichiWorldButton.getItemMeta
+                  teleportToSeichiWorldButtonMeta.setDisplayName(
+                    s"${ChatColor.AQUA}整地ワールドに移動")
+                  teleportToSeichiWorldButtonMeta.addItemFlags(
+                    ItemFlag.HIDE_ATTRIBUTES)
+                  teleportToSeichiWorldButton.setItemMeta(
+                    teleportToSeichiWorldButtonMeta)
+                  teleportToSeichiWorldButton.setClickAction { player =>
+                    val seichiWorld =
+                      ExternalPlugins.getMultiverseCore.getMVWorldManager
+                        .getMVWorld("SeichiWorld")
+                    player.teleport(seichiWorld.getSpawnLocation)
+                  }
+                  inventory.setItem(27, teleportToSeichiWorldButton)
+                  val teleportToNetherSeichiWorldButton =
+                    new ItemStack(Material.NETHERRACK)
+                  val teleportToNetherSeichiWorldButtonMeta =
+                    teleportToNetherSeichiWorldButton.getItemMeta
+                  teleportToNetherSeichiWorldButtonMeta.setDisplayName(
+                    s"${ChatColor.AQUA}ネザー整地ワールドに移動")
+                  teleportToNetherSeichiWorldButtonMeta.addItemFlags(
+                    ItemFlag.HIDE_ATTRIBUTES)
+                  teleportToNetherSeichiWorldButton.setItemMeta(
+                    teleportToNetherSeichiWorldButtonMeta)
+                  teleportToNetherSeichiWorldButton.setClickAction { player =>
+                    val seichiWorld =
+                      ExternalPlugins.getMultiverseCore.getMVWorldManager
+                        .getMVWorld("NetherSeichiWorld")
+                    player.teleport(seichiWorld.getSpawnLocation)
+                  }
+                  inventory.setItem(28, teleportToNetherSeichiWorldButton)
+                  val teleportToEndSeichiWorldButton =
+                    new ItemStack(Material.END_STONE)
+                  val teleportToEndSeichiWorldButtonMeta =
+                    teleportToEndSeichiWorldButton.getItemMeta
+                  teleportToEndSeichiWorldButtonMeta.setDisplayName(
+                    s"${ChatColor.AQUA}エンド整地ワールドに移動")
+                  teleportToEndSeichiWorldButtonMeta.addItemFlags(
+                    ItemFlag.HIDE_ATTRIBUTES)
+                  teleportToEndSeichiWorldButton.setItemMeta(
+                    teleportToEndSeichiWorldButtonMeta)
+                  teleportToEndSeichiWorldButton.setClickAction { player =>
+                    val seichiWorld =
+                      ExternalPlugins.getMultiverseCore.getMVWorldManager
+                        .getMVWorld("EndSeichiWorld")
+                    player.teleport(seichiWorld.getSpawnLocation)
+                  }
+                  inventory.setItem(29, teleportToEndSeichiWorldButton)
                   val closeButton = new ItemStack(Material.BARRIER)
                   val closeButtonMeta = closeButton.getItemMeta
                   closeButtonMeta.setDisplayName(s"${ChatColor.RED}閉じる")
