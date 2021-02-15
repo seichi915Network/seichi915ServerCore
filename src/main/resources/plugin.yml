@@ -9,6 +9,7 @@ website: https://www.seichi915.net
 depend:
   - CoreProtect
   - WorldGuard
+  - Multiverse-Core
 commands:
   fly:
     description: Toggle flying
