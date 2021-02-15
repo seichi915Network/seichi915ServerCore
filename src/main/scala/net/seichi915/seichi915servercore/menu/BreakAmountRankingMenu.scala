@@ -28,7 +28,9 @@ object BreakAmountRankingMenu extends Menu {
           val itemStack = new ItemStack(Material.PLAYER_HEAD)
           val skullMeta = itemStack.getItemMeta.asInstanceOf[SkullMeta]
           skullMeta.setDisplayName(
-            s"${ChatColor.AQUA}${count + 1}位: ${ChatColor.WHITE}${playerAndBreakAmount._1.getName}")
+            s"${ChatColor.AQUA}${count + 1}位: ${ChatColor.WHITE}${Database
+              .getName(playerAndBreakAmount._1.getUniqueId)
+              .getOrElse(s"${ChatColor.RED}${playerAndBreakAmount._1.getUniqueId.toString}")}")
           skullMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES)
           skullMeta.setOwningPlayer(playerAndBreakAmount._1)
           skullMeta.setLore(List(

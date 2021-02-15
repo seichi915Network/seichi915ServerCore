@@ -192,4 +192,13 @@ object Database {
       case _                  =>
     }
   }
+
+  def getName(uuid: UUID): Option[String] =
+    DB localTx { implicit session =>
+      sql"SELECT name FROM playerdata WHERE uuid = $uuid"
+        .map(_.string("name"))
+        .list()
+        .apply()
+        .headOption
+    }
 }
