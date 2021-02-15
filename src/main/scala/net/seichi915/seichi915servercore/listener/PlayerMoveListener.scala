@@ -17,6 +17,13 @@ class PlayerMoveListener extends Listener {
         event.getPlayer.kickPlayer("プレイヤーデータが見つかりませんでした。".toErrorMessage)
         return
       })
+    if (event.getPlayer.getLocation.getBlockY <= 4)
+      while (event.getPlayer.getWorld
+               .getBlockAt(event.getPlayer.getLocation)
+               .getType != Material.AIR || event.getPlayer.getWorld
+               .getBlockAt(event.getPlayer.getLocation.clone().add(0, 1, 0))
+               .getType != Material.AIR) event.getPlayer.teleport(
+        event.getPlayer.getLocation.clone().add(0, 1, 0))
     if (playerData.isLiquidHardenerEnabled)
       Util
         .calcTargetBlocks(event.getPlayer,
