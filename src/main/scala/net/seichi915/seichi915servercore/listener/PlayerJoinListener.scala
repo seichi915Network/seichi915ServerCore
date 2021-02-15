@@ -2,18 +2,15 @@ package net.seichi915.seichi915servercore.listener
 
 import net.seichi915.seichi915servercore.Seichi915ServerCore
 import net.seichi915.seichi915servercore.database.Database
-import net.seichi915.seichi915servercore.menu.{
-  BreakAmountRankingMenu,
-  LiquidHardenerSettingMenu,
-  MultiBreakSettingMenu
-}
+import net.seichi915.seichi915servercore.menu._
 import net.seichi915.seichi915servercore.util.Implicits._
 import org.bukkit.boss.{BarColor, BarStyle}
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.entity.Player
-import org.bukkit.{Bukkit, ChatColor, GameMode, Material, NamespacedKey}
+import org.bukkit.{Bukkit, ChatColor, Color, GameMode, Material, NamespacedKey}
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.{EventHandler, Listener}
+import org.bukkit.inventory.meta.PotionMeta
 import org.bukkit.inventory.{ItemFlag, ItemStack}
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -108,6 +105,24 @@ class PlayerJoinListener extends Listener {
                     player.playMenuButtonClickSound()
                   }
                   inventory.setItem(11, openLiquidHardenerSettingButton)
+                  val openPotionEffectSettingButton =
+                    new ItemStack(Material.POTION)
+                  val openPotionEffectSettingButtonMeta =
+                    openPotionEffectSettingButton.getItemMeta
+                      .asInstanceOf[PotionMeta]
+                  openPotionEffectSettingButtonMeta.setColor(Color.AQUA)
+                  openPotionEffectSettingButtonMeta.setDisplayName(
+                    s"${ChatColor.AQUA}ポーションエフェクト設定を開く")
+                  openPotionEffectSettingButtonMeta.addItemFlags(
+                    ItemFlag.HIDE_ATTRIBUTES,
+                    ItemFlag.HIDE_POTION_EFFECTS)
+                  openPotionEffectSettingButton.setItemMeta(
+                    openPotionEffectSettingButtonMeta)
+                  openPotionEffectSettingButton.setClickAction { player =>
+                    PotionEffectSettingMenu.open(player)
+                    player.playMenuButtonClickSound()
+                  }
+                  inventory.setItem(12, openPotionEffectSettingButton)
                   val openBreakAmountRankingButton =
                     new ItemStack(Material.NETHER_STAR)
                   val openBreakAmountRankingButtonMeta =

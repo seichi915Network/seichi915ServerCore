@@ -14,7 +14,14 @@ case class PlayerData(var totalBreakAmount: Long,
                       var multiBreakEnabled: Boolean,
                       var multiBreak: MultiBreak,
                       var liquidHardenerEnabled: Boolean,
-                      var liquidHardener: MultiBreak) {
+                      var liquidHardener: MultiBreak,
+                      var speedEffectEnabled: Boolean,
+                      var speedEffectAmplifier: Int,
+                      var hasteEffectEnabled: Boolean,
+                      var hasteEffectAmplifier: Int,
+                      var jumpBoostEffectEnabled: Boolean,
+                      var jumpBoostEffectAmplifier: Int,
+                      var nightVisionEffectEnabled: Boolean) {
   def getTotalBreakAmount: Long = totalBreakAmount
 
   def setTotalBreakAmount(totalBreakAmount: Long): Unit =
@@ -53,6 +60,41 @@ case class PlayerData(var totalBreakAmount: Long,
 
   def setLiquidHardener(liquidHardener: MultiBreak): Unit =
     this.liquidHardener = liquidHardener
+
+  def isSpeedEffectEnabled: Boolean = speedEffectEnabled
+
+  def setSpeedEffectEnabled(speedEffectEnabled: Boolean): Unit =
+    this.speedEffectEnabled = speedEffectEnabled
+
+  def getSpeedEffectAmplifier: Int = speedEffectAmplifier
+
+  def setSpeedEffectAmplifier(speedEffectAmplifier: Int): Unit =
+    this.speedEffectAmplifier = speedEffectAmplifier
+
+  def isHasteEffectEnabled: Boolean = hasteEffectEnabled
+
+  def setHasteEffectEnabled(hasteEffectEnabled: Boolean): Unit =
+    this.hasteEffectEnabled = hasteEffectEnabled
+
+  def getHasteEffectAmplifier: Int = hasteEffectAmplifier
+
+  def setHasteEffectAmplifier(hasteEffectAmplifier: Int): Unit =
+    this.hasteEffectAmplifier = hasteEffectAmplifier
+
+  def isJumpBoostEffectEnabled: Boolean = jumpBoostEffectEnabled
+
+  def setJumpBoostEffectEnabled(jumpBoostEffectEnabled: Boolean): Unit =
+    this.jumpBoostEffectEnabled = jumpBoostEffectEnabled
+
+  def getJumpBoostEffectAmplifier: Int = jumpBoostEffectAmplifier
+
+  def setJumpBoostEffectAmplifier(jumpBoostEffectAmplifier: Int): Unit =
+    this.jumpBoostEffectAmplifier = jumpBoostEffectAmplifier
+
+  def isNightVisionEffectEnabled: Boolean = nightVisionEffectEnabled
+
+  def setNightVisionEffectEnabled(nightVisionEffectEnabled: Boolean): Unit =
+    this.nightVisionEffectEnabled = nightVisionEffectEnabled
 
   def getRanking(player: Player): Int = {
     Database.getPlayerAndBreakAmount.sortBy(_._2).reverse.zipWithIndex.foreach {

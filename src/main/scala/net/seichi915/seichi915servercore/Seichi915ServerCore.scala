@@ -60,6 +60,7 @@ class Seichi915ServerCore extends JavaPlugin {
     }
     Map(
       (6000, 6000) -> new PlayerDataSaveTask,
+      (15, 15) -> new PotionEffectUpdateTask,
       (72000, 72000) -> new ScoreboardResetTask,
       (20, 20) -> new ScoreboardUpdateTask
     ).foreach {

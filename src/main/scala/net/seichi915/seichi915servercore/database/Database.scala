@@ -67,7 +67,14 @@ object Database {
             resultSet.boolean("liquid_hardener_enabled"),
             MultiBreak(resultSet.int("liquid_hardener_width"),
                        resultSet.int("liquid_hardener_height"),
-                       resultSet.int("liquid_hardener_depth"))
+                       resultSet.int("liquid_hardener_depth")),
+            resultSet.boolean("speed_effect_enabled"),
+            resultSet.int("speed_effect_amplifier"),
+            resultSet.boolean("haste_effect_enabled"),
+            resultSet.int("haste_effect_amplifier"),
+            resultSet.boolean("jump_boost_effect_enabled"),
+            resultSet.int("jump_boost_effect_amplifier"),
+            resultSet.boolean("night_vision_effect_enabled")
         ))
         .list()
         .apply()
@@ -101,7 +108,14 @@ object Database {
            liquid_hardener_enabled,
            liquid_hardener_width,
            liquid_hardener_height,
-           liquid_hardener_depth
+           liquid_hardener_depth,
+           speed_effect_enabled,
+           speed_effect_amplifier,
+           haste_effect_enabled,
+           haste_effect_amplifier,
+           jump_boost_effect_enabled,
+           jump_boost_effect_amplifier,
+           night_vision_effect_enabled
            ) VALUES (
            ${player.getUniqueId},
            ${player.getName},
@@ -115,7 +129,14 @@ object Database {
            1,
            3,
            3,
-           3
+           3,
+           true,
+           10,
+           true,
+           2,
+           false,
+           1,
+           true
            )"""
         .update()
         .apply()
@@ -137,7 +158,14 @@ object Database {
              liquid_hardener_enabled=${playerData.isLiquidHardenerEnabled},
              liquid_hardener_width=${playerData.getLiquidHardener.getWidth},
              liquid_hardener_height=${playerData.getLiquidHardener.getHeight},
-             liquid_hardener_depth=${playerData.getLiquidHardener.getDepth}
+             liquid_hardener_depth=${playerData.getLiquidHardener.getDepth},
+             speed_effect_enabled=${playerData.isSpeedEffectEnabled},
+             speed_effect_amplifier=${playerData.getSpeedEffectAmplifier},
+             haste_effect_enabled=${playerData.isHasteEffectEnabled},
+             haste_effect_amplifier=${playerData.getHasteEffectAmplifier},
+             jump_boost_effect_enabled=${playerData.isJumpBoostEffectEnabled},
+             jump_boost_effect_amplifier=${playerData.getJumpBoostEffectAmplifier},
+             night_vision_effect_enabled=${playerData.isNightVisionEffectEnabled}
              WHERE uuid = ${player.getUniqueId}"""
           .update()
           .apply()
