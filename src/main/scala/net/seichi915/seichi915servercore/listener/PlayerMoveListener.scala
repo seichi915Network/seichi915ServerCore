@@ -59,13 +59,13 @@ class PlayerMoveListener extends Listener {
           }
         }
     val firstPosition = new Location(event.getTo.getWorld,
-                                     event.getTo.getBlockX + 5,
+                                     event.getTo.getBlockX + 10,
                                      5,
-                                     event.getTo.getBlockZ + 5)
+                                     event.getTo.getBlockZ + 10)
     val secondPosition = new Location(event.getTo.getWorld,
-                                      event.getTo.getBlockX - 5,
+                                      event.getTo.getBlockX - 10,
                                       5,
-                                      event.getTo.getBlockZ - 5)
+                                      event.getTo.getBlockZ - 10)
     for (y <- 0 until (firstPosition.getBlockY - secondPosition.getBlockY) + 1;
          z <- 0 until (firstPosition.getBlockZ - secondPosition.getBlockZ) + 1;
          x <- 0 until (firstPosition.getBlockX - secondPosition.getBlockX) + 1) {
