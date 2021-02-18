@@ -40,6 +40,7 @@ class BlockBreakListener extends Listener {
                               event.getBlock,
                               playerData.getMultiBreak)
       else List(event.getBlock)
+    var totalExp = BigDecimal(0.0)
     targetBlocks.foreach { block =>
       val playerSeichiEvent = new PlayerSeichiEvent(event.getPlayer, block)
       Bukkit.getPluginManager.callEvent(playerSeichiEvent)
@@ -56,8 +57,14 @@ class BlockBreakListener extends Listener {
             s"マルチブレイクのサイズ上限が ${ChatColor.GREEN}${playerData.calcMaxMultiBreakSize} ${ChatColor.RESET}になりました。".toSuccessMessage)
           event.getPlayer.playChangeMaxMultiBreakSizeSound()
         }
+        totalExp += block.getExp
       }
     }
+    if (playerData.getRank == 1000) totalExp = BigDecimal(0.0)
+    event.getPlayer.sendActionBar(
+      s"Exp: +${totalExp.doubleValue} ${if (playerData.getExpBoost > 1.0)
+        s"${ChatColor.YELLOW}× ${playerData.getExpBoost}"
+      else ""}")
     Seichi915ServerCore.bossBarMap
       .getOrElse(event.getPlayer, return )
       .setTitle(s"総整地量: ${playerData.getTotalBreakAmount}")
