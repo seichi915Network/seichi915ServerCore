@@ -68,6 +68,13 @@ class PlayerJoinListener extends Listener {
                   event.getPlayer.setLevel(playerData.getRank)
                   event.getPlayer.setExp(
                     (playerData.getExp / BigDecimal(2000f)).floatValue)
+                  if (playerData.calcMaxMultiBreakSize > playerData.getMaxMultiBreakSize) {
+                    playerData.setMaxMultiBreakSize(
+                      playerData.calcMaxMultiBreakSize)
+                    event.getPlayer.sendMessage(
+                      s"マルチブレイクのサイズ上限が ${ChatColor.GREEN}${playerData.calcMaxMultiBreakSize} ${ChatColor.RESET}になりました。".toSuccessMessage)
+                    event.getPlayer.playChangeMaxMultiBreakSizeSound()
+                  }
                   val inventory = event.getPlayer.getInventory
                   inventory.clear()
                   val openMultiBreakSettingButton =

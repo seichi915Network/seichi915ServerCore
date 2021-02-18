@@ -12,6 +12,7 @@ case class PlayerData(var totalBreakAmount: Long,
                       var exp: BigDecimal,
                       var expBoost: BigDecimal,
                       var votePoint: Int,
+                      var maxMultiBreakSize: Int,
                       var multiBreakEnabled: Boolean,
                       var multiBreak: MultiBreak,
                       var liquidHardenerEnabled: Boolean,
@@ -46,6 +47,11 @@ case class PlayerData(var totalBreakAmount: Long,
   def getVotePoint: Int = votePoint
 
   def setVotePoint(votePoint: Int): Unit = this.votePoint = votePoint
+
+  def getMaxMultiBreakSize: Int = maxMultiBreakSize
+
+  def setMaxMultiBreakSize(maxMultiBreakSize: Int): Unit =
+    this.maxMultiBreakSize = maxMultiBreakSize
 
   def isMultiBreakEnabled: Boolean = multiBreakEnabled
 
