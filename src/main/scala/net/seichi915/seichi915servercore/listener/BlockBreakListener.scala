@@ -49,11 +49,11 @@ class BlockBreakListener extends Listener {
                                                      block.getType,
                                                      block.getBlockData)
         block.setType(Material.AIR)
-        val previousMaxMultiBreakSize = playerData.getMaxMultiBreakSize
+        val previousMaxMultiBreakSize = playerData.calcMaxMultiBreakSize
         playerData.setTotalBreakAmount(playerData.getTotalBreakAmount + 1)
-        if (playerData.getMaxMultiBreakSize != previousMaxMultiBreakSize) {
+        if (playerData.calcMaxMultiBreakSize != previousMaxMultiBreakSize) {
           event.getPlayer.sendMessage(
-            s"マルチブレイクのサイズ上限が ${ChatColor.GREEN}${playerData.getMaxMultiBreakSize} ${ChatColor.RESET}になりました。".toSuccessMessage)
+            s"マルチブレイクのサイズ上限が ${ChatColor.GREEN}${playerData.calcMaxMultiBreakSize} ${ChatColor.RESET}になりました。".toSuccessMessage)
           event.getPlayer.playChangeMaxMultiBreakSizeSound()
         }
       }

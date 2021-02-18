@@ -55,13 +55,13 @@ object MultiBreakSettingMenu extends Menu {
           s"${if (multiBreak.getWidth <= 15)
             s"${ChatColor.WHITE}横幅を ${ChatColor.YELLOW}${multiBreak.getWidth}${ChatColor.WHITE} から ${ChatColor.GREEN}${multiBreak.getWidth + 2}${ChatColor.WHITE} に設定します。"
           else s"${ChatColor.RED}横幅の上限は17ブロックです。"}",
-          s"${if (multiBreak.getWidth >= playerData.getMaxMultiBreakSize) s"${ChatColor.RED}これ以上上げられません。"
+          s"${if (multiBreak.getWidth >= playerData.calcMaxMultiBreakSize) s"${ChatColor.RED}これ以上上げられません。"
           else ""}"
         ).asJava)
       increaseWidthButtonMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES)
       increaseWidthButton.setItemMeta(increaseWidthButtonMeta)
       increaseWidthButton.setClickAction { player =>
-        if (!(multiBreak.getWidth >= playerData.getMaxMultiBreakSize)) {
+        if (!(multiBreak.getWidth >= playerData.calcMaxMultiBreakSize)) {
           playerData.setMultiBreak(
             MultiBreak(multiBreak.getWidth + 2,
                        multiBreak.getHeight,
@@ -107,13 +107,13 @@ object MultiBreakSettingMenu extends Menu {
           s"${if (multiBreak.getHeight <= 15)
             s"${ChatColor.WHITE}縦幅を ${ChatColor.YELLOW}${multiBreak.getHeight}${ChatColor.WHITE} から ${ChatColor.GREEN}${multiBreak.getHeight + 2}${ChatColor.WHITE} に設定します。"
           else s"${ChatColor.RED}縦幅の上限は17ブロックです。"}",
-          s"${if (multiBreak.getHeight >= playerData.getMaxMultiBreakSize) s"${ChatColor.RED}これ以上上げられません。"
+          s"${if (multiBreak.getHeight >= playerData.calcMaxMultiBreakSize) s"${ChatColor.RED}これ以上上げられません。"
           else ""}"
         ).asJava)
       increaseHeightButtonMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES)
       increaseHeightButton.setItemMeta(increaseHeightButtonMeta)
       increaseHeightButton.setClickAction { player =>
-        if (!(multiBreak.getHeight >= playerData.getMaxMultiBreakSize)) {
+        if (!(multiBreak.getHeight >= playerData.calcMaxMultiBreakSize)) {
           playerData.setMultiBreak(
             MultiBreak(multiBreak.getWidth,
                        multiBreak.getHeight + 2,
@@ -159,13 +159,13 @@ object MultiBreakSettingMenu extends Menu {
           s"${if (multiBreak.getDepth <= 15)
             s"${ChatColor.WHITE}奥行を ${ChatColor.YELLOW}${multiBreak.getDepth}${ChatColor.WHITE} から ${ChatColor.GREEN}${multiBreak.getDepth + 2}${ChatColor.WHITE} に設定します。"
           else s"${ChatColor.RED}奥行の上限は17ブロックです。"}",
-          s"${if (multiBreak.getDepth >= playerData.getMaxMultiBreakSize) s"${ChatColor.RED}これ以上上げられません。"
+          s"${if (multiBreak.getDepth >= playerData.calcMaxMultiBreakSize) s"${ChatColor.RED}これ以上上げられません。"
           else ""}"
         ).asJava)
       increaseDepthButtonMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES)
       increaseDepthButton.setItemMeta(increaseDepthButtonMeta)
       increaseDepthButton.setClickAction { player =>
-        if (!(multiBreak.getDepth >= playerData.getMaxMultiBreakSize)) {
+        if (!(multiBreak.getDepth >= playerData.calcMaxMultiBreakSize)) {
           playerData.setMultiBreak(
             MultiBreak(multiBreak.getWidth,
                        multiBreak.getHeight,

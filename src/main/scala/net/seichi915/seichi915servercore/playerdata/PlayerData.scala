@@ -109,7 +109,7 @@ case class PlayerData(var totalBreakAmount: Long,
     0
   }
 
-  def getMaxMultiBreakSize: Int =
+  def calcMaxMultiBreakSize: Int =
     if (getTotalBreakAmount >= 10000000000L) 17
     else if (getTotalBreakAmount >= 1000000000L) 15
     else if (getTotalBreakAmount >= 100000000L) 13

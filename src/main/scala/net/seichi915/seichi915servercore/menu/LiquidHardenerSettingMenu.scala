@@ -56,13 +56,14 @@ object LiquidHardenerSettingMenu extends Menu {
           s"${if (liquidHardener.getWidth <= 15)
             s"${ChatColor.WHITE}横幅を ${ChatColor.YELLOW}${liquidHardener.getWidth}${ChatColor.WHITE} から ${ChatColor.GREEN}${liquidHardener.getWidth + 2}${ChatColor.WHITE} に設定します。"
           else s"${ChatColor.RED}横幅の上限は17ブロックです。"}",
-          s"${if (liquidHardener.getWidth >= playerData.getMaxMultiBreakSize) s"${ChatColor.RED}これ以上上げられません。"
+          s"${if (liquidHardener.getWidth >= playerData.calcMaxMultiBreakSize)
+            s"${ChatColor.RED}これ以上上げられません。"
           else ""}"
         ).asJava)
       increaseWidthButtonMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES)
       increaseWidthButton.setItemMeta(increaseWidthButtonMeta)
       increaseWidthButton.setClickAction { player =>
-        if (!(liquidHardener.getWidth >= playerData.getMaxMultiBreakSize)) {
+        if (!(liquidHardener.getWidth >= playerData.calcMaxMultiBreakSize)) {
           playerData.setLiquidHardener(
             MultiBreak(liquidHardener.getWidth + 2,
                        liquidHardener.getHeight,
@@ -108,14 +109,14 @@ object LiquidHardenerSettingMenu extends Menu {
           s"${if (liquidHardener.getHeight <= 15)
             s"${ChatColor.WHITE}縦幅を ${ChatColor.YELLOW}${liquidHardener.getHeight}${ChatColor.WHITE} から ${ChatColor.GREEN}${liquidHardener.getHeight + 2}${ChatColor.WHITE} に設定します。"
           else s"${ChatColor.RED}縦幅の上限は17ブロックです。"}",
-          s"${if (liquidHardener.getHeight >= playerData.getMaxMultiBreakSize)
+          s"${if (liquidHardener.getHeight >= playerData.calcMaxMultiBreakSize)
             s"${ChatColor.RED}これ以上上げられません。"
           else ""}"
         ).asJava)
       increaseHeightButtonMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES)
       increaseHeightButton.setItemMeta(increaseHeightButtonMeta)
       increaseHeightButton.setClickAction { player =>
-        if (!(liquidHardener.getHeight >= playerData.getMaxMultiBreakSize)) {
+        if (!(liquidHardener.getHeight >= playerData.calcMaxMultiBreakSize)) {
           playerData.setLiquidHardener(
             MultiBreak(liquidHardener.getWidth,
                        liquidHardener.getHeight + 2,
@@ -161,13 +162,14 @@ object LiquidHardenerSettingMenu extends Menu {
           s"${if (liquidHardener.getDepth <= 15)
             s"${ChatColor.WHITE}奥行を ${ChatColor.YELLOW}${liquidHardener.getDepth}${ChatColor.WHITE} から ${ChatColor.GREEN}${liquidHardener.getDepth + 2}${ChatColor.WHITE} に設定します。"
           else s"${ChatColor.RED}奥行の上限は17ブロックです。"}",
-          s"${if (liquidHardener.getDepth >= playerData.getMaxMultiBreakSize) s"${ChatColor.RED}これ以上上げられません。"
+          s"${if (liquidHardener.getDepth >= playerData.calcMaxMultiBreakSize)
+            s"${ChatColor.RED}これ以上上げられません。"
           else ""}"
         ).asJava)
       increaseDepthButtonMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES)
       increaseDepthButton.setItemMeta(increaseDepthButtonMeta)
       increaseDepthButton.setClickAction { player =>
-        if (!(liquidHardener.getDepth >= playerData.getMaxMultiBreakSize)) {
+        if (!(liquidHardener.getDepth >= playerData.calcMaxMultiBreakSize)) {
           playerData.setLiquidHardener(
             MultiBreak(liquidHardener.getWidth,
                        liquidHardener.getHeight,
