@@ -124,6 +124,8 @@ object Implicits {
             s"${ChatColor.GREEN}Rank: ${ChatColor.WHITE}${playerData.getRank}",
             s"${ChatColor.GREEN}Exp: ${ChatColor.WHITE}${playerData.getExp}/2000.00",
             "",
+            s"${ChatColor.GREEN}投票ポイント: ${ChatColor.WHITE}${playerData.getVotePoint}",
+            "",
             s"${ChatColor.GREEN}総整地量ランキング: ${ChatColor.WHITE}${playerData.getRanking(player)}位",
             "クリックで更新できます。"
           ).map(str => s"${ChatColor.WHITE}$str").asJava

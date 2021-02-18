@@ -50,7 +50,8 @@ class Seichi915ServerCore extends JavaPlugin {
       new PlayerSwapHandItemsListener
     ).foreach(Bukkit.getPluginManager.registerEvents(_, this))
     Map(
-      "fly" -> new FlyCommand
+      "fly" -> new FlyCommand,
+      "votepoint" -> new VotePointCommand
     ).foreach {
       case (commandName: String, commandExecutor: CommandExecutor) =>
         Bukkit.getPluginCommand(commandName).setExecutor(commandExecutor)

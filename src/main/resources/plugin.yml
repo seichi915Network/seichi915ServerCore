@@ -16,6 +16,11 @@ commands:
     usage: /fly
     permission: seichi915servercore.command.fly
     permission-message: "§c権限が不足しています。"
+  votepoint:
+    description: Vote point management
+    usage: /votepoint <add/set> <Player> <Amount>
+    permission: seichi915servercore.command.votepoint
+    permission-message: "§c権限が不足しています。"
 permissions:
   seichi915servercore.*:
     description: Grant all permissions of seichi915ServerCore
@@ -25,6 +30,10 @@ permissions:
     description: Grant all command permissions of seichi915ServerCore
     children:
       seichi915servercore.command.fly: true
+      seichi915servercore.command.votepoint: true
   seichi915servercore.command.fly:
     description: Permission to use /fly
     default: true
+  seichi915servercore.command.votepoint:
+    description: Permission to use /votepoint
+    default: op

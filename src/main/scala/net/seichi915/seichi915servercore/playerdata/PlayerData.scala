@@ -11,6 +11,7 @@ case class PlayerData(var totalBreakAmount: Long,
                       var rank: Int,
                       var exp: BigDecimal,
                       var expBoost: BigDecimal,
+                      var votePoint: Int,
                       var multiBreakEnabled: Boolean,
                       var multiBreak: MultiBreak,
                       var liquidHardenerEnabled: Boolean,
@@ -41,6 +42,10 @@ case class PlayerData(var totalBreakAmount: Long,
 
   def setExpBoost(expBoost: BigDecimal): Unit =
     this.expBoost = if (getRank < 1000) expBoost else BigDecimal(0.0)
+
+  def getVotePoint: Int = votePoint
+
+  def setVotePoint(votePoint: Int): Unit = this.votePoint = votePoint
 
   def isMultiBreakEnabled: Boolean = multiBreakEnabled
 

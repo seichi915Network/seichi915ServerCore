@@ -60,6 +60,7 @@ object Database {
             resultSet.int("rank"),
             BigDecimal(resultSet.double("exp")),
             BigDecimal(1.0),
+            resultSet.int("vote_point"),
             resultSet.boolean("multibreak_enabled"),
             MultiBreak(resultSet.int("multibreak_width"),
                        resultSet.int("multibreak_height"),
@@ -101,6 +102,7 @@ object Database {
            total_break_amount,
            rank,
            exp,
+           vote_point,
            multibreak_enabled,
            multibreak_width,
            multibreak_height,
@@ -122,11 +124,12 @@ object Database {
            0,
            1,
            0,
-           1,
+           0,
+           true,
            3,
            3,
            3,
-           1,
+           true,
            3,
            3,
            3,
@@ -151,6 +154,7 @@ object Database {
              total_break_amount=${playerData.getTotalBreakAmount},
              rank=${playerData.getRank},
              exp=${playerData.getExp.doubleValue},
+             vote_point=${playerData.getVotePoint},
              multibreak_enabled=${playerData.isMultiBreakEnabled},
              multibreak_width=${playerData.getMultiBreak.getWidth},
              multibreak_height=${playerData.getMultiBreak.getHeight},
@@ -200,5 +204,38 @@ object Database {
         .list()
         .apply()
         .headOption
+    }
+
+  def getNames: List[String] =
+    DB localTx { implicit session =>
+      sql"SELECT name FROM playerdata"
+        .map(_.string("name"))
+        .list()
+        .apply()
+    }
+
+  def getUUID(name: String): Option[UUID] =
+    DB localTx { implicit session =>
+      sql"SELECT uuid FROM playerdata WHERE name = $name"
+        .map(resultSet => UUID.fromString(resultSet.string("uuid")))
+        .list()
+        .apply()
+        .headOption
+    }
+
+  def getVotePoint(uuid: UUID): Int =
+    DB localTx { implicit session =>
+      sql"SELECT vote_point FROM playerdata WHERE uuid = $uuid"
+        .map(_.int("vote_point"))
+        .list()
+        .apply()
+        .head
+    }
+
+  def setVotePoint(uuid: UUID, point: Int): Unit =
+    DB localTx { implicit session =>
+      sql"UPDATE playerdata SET vote_point=$point WHERE uuid = $uuid"
+        .update()
+        .apply()
     }
 }
