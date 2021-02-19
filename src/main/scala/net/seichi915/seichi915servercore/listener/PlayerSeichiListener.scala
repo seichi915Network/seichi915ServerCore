@@ -16,7 +16,10 @@ class PlayerSeichiListener extends Listener {
         return
       })
     playerData.setExp(
-      playerData.getExp + (event.getBlock.getExp * playerData.getExpBoost))
+      playerData.getExp + (event.getBlock.getExp * (if (playerData.getRank == 1000)
+                                                      BigDecimal(0.0)
+                                                    else
+                                                      playerData.getExpBoost)))
     while (playerData.canRankUp) {
       event.getPlayer.playRankUpSound()
       event.getPlayer.sendMessage(

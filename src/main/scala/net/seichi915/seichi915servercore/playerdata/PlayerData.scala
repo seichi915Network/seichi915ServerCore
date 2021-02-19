@@ -42,7 +42,7 @@ case class PlayerData(var totalBreakAmount: Long,
     if (getRank < 1000) expBoost else BigDecimal(0.0)
 
   def setExpBoost(expBoost: BigDecimal): Unit =
-    this.expBoost = if (getRank < 1000) expBoost else BigDecimal(0.0)
+    this.expBoost = expBoost
 
   def getVotePoint: Int = votePoint
 
