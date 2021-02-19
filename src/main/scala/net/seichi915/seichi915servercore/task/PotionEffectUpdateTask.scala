@@ -12,8 +12,10 @@ class PotionEffectUpdateTask extends BukkitRunnable {
   override def run(): Unit =
     Seichi915ServerCore.playerDataMap.foreach {
       case (player: Player, playerData: PlayerData) =>
-        player.getActivePotionEffects.asScala.foreach(potionEffect =>
-          player.removePotionEffect(potionEffect.getType))
+        player.getActivePotionEffects.asScala.foreach { potionEffect =>
+          if (potionEffect.getType != PotionEffectType.LUCK)
+            player.removePotionEffect(potionEffect.getType)
+        }
         if (playerData.isSpeedEffectEnabled)
           player.addPotionEffect(
             new PotionEffect(PotionEffectType.SPEED,

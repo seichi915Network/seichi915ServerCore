@@ -60,6 +60,7 @@ class Seichi915ServerCore extends JavaPlugin {
           .setTabCompleter(commandExecutor.asInstanceOf[TabCompleter])
     }
     Map(
+      (5, 5) -> new ExpBoostUpdateTask,
       (6000, 6000) -> new PlayerDataSaveTask,
       (15, 15) -> new PotionEffectUpdateTask,
       (72000, 72000) -> new ScoreboardResetTask,

@@ -190,6 +190,15 @@ class PlayerJoinListener extends Listener {
                     player.teleport(seichiWorld.getSpawnLocation)
                   }
                   inventory.setItem(29, teleportToEndSeichiWorldButton)
+                  val openShopButton = ItemStackBuilder(Material.EMERALD)
+                    .setDisplayName(s"${ChatColor.AQUA}ショップを開く")
+                    .addItemFlag(ItemFlag.HIDE_ATTRIBUTES)
+                    .build
+                  openShopButton.setClickAction { player =>
+                    ShopMenu.open(player)
+                    player.playMenuButtonClickSound()
+                  }
+                  inventory.setItem(17, openShopButton)
                   val closeButton = ItemStackBuilder(Material.BARRIER)
                     .setDisplayName(s"${ChatColor.RED}閉じる")
                     .addItemFlag(ItemFlag.HIDE_ATTRIBUTES)
