@@ -1,6 +1,7 @@
 package net.seichi915.seichi915servercore.listener
 
 import net.seichi915.seichi915servercore.Seichi915ServerCore
+import net.seichi915.seichi915servercore.builder.ItemStackBuilder
 import net.seichi915.seichi915servercore.database.Database
 import net.seichi915.seichi915servercore.external.ExternalPlugins
 import net.seichi915.seichi915servercore.menu._
@@ -12,10 +13,9 @@ import org.bukkit.{Bukkit, ChatColor, Color, GameMode, Material, NamespacedKey}
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.{EventHandler, Listener}
 import org.bukkit.inventory.meta.PotionMeta
-import org.bukkit.inventory.{ItemFlag, ItemStack}
+import org.bukkit.inventory.ItemFlag
 
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.jdk.CollectionConverters._
 import scala.util.{Failure, Success}
 
 class PlayerJoinListener extends Listener {
@@ -78,52 +78,39 @@ class PlayerJoinListener extends Listener {
                   val inventory = event.getPlayer.getInventory
                   inventory.clear()
                   val openMultiBreakSettingButton =
-                    new ItemStack(Material.DIAMOND_PICKAXE)
-                  val openMultiBreakSettingButtonMeta =
-                    openMultiBreakSettingButton.getItemMeta
-                  openMultiBreakSettingButtonMeta.setDisplayName(
-                    s"${ChatColor.AQUA}マルチブレイク設定を開く")
-                  openMultiBreakSettingButtonMeta.addItemFlags(
-                    ItemFlag.HIDE_ATTRIBUTES,
-                    ItemFlag.HIDE_ENCHANTS)
-                  openMultiBreakSettingButton.setItemMeta(
-                    openMultiBreakSettingButtonMeta)
-                  openMultiBreakSettingButton
-                    .addUnsafeEnchantment(Enchantment.ARROW_DAMAGE, 1)
+                    ItemStackBuilder(Material.DIAMOND_PICKAXE)
+                      .setDisplayName(s"${ChatColor.AQUA}マルチブレイク設定を開く")
+                      .addItemFlags(ItemFlag.HIDE_ATTRIBUTES,
+                                    ItemFlag.HIDE_ENCHANTS)
+                      .addEnchantment(Enchantment.ARROW_DAMAGE, 1)
+                      .build
                   openMultiBreakSettingButton.setClickAction { player =>
                     MultiBreakSettingMenu.open(player)
                     player.playMenuButtonClickSound()
                   }
                   inventory.setItem(10, openMultiBreakSettingButton)
                   val openLiquidHardenerSettingButton =
-                    new ItemStack(Material.IRON_PICKAXE)
-                  val openLiquidHardenerSettingButtonMeta =
-                    openLiquidHardenerSettingButton.getItemMeta
-                  openLiquidHardenerSettingButtonMeta.setDisplayName(
-                    s"${ChatColor.AQUA}液体絶対固めるマン設定を開く")
-                  openLiquidHardenerSettingButtonMeta.addItemFlags(
-                    ItemFlag.HIDE_ATTRIBUTES,
-                    ItemFlag.HIDE_ENCHANTS)
-                  openLiquidHardenerSettingButton.setItemMeta(
-                    openLiquidHardenerSettingButtonMeta)
-                  openLiquidHardenerSettingButton
-                    .addUnsafeEnchantment(Enchantment.ARROW_DAMAGE, 1)
+                    ItemStackBuilder(Material.IRON_PICKAXE)
+                      .setDisplayName(s"${ChatColor.AQUA}液体絶対固めるマン設定を開く")
+                      .addItemFlags(ItemFlag.HIDE_ATTRIBUTES,
+                                    ItemFlag.HIDE_ENCHANTS)
+                      .addEnchantment(Enchantment.ARROW_DAMAGE, 1)
+                      .build
                   openLiquidHardenerSettingButton.setClickAction { player =>
                     LiquidHardenerSettingMenu.open(player)
                     player.playMenuButtonClickSound()
                   }
                   inventory.setItem(11, openLiquidHardenerSettingButton)
                   val openPotionEffectSettingButton =
-                    new ItemStack(Material.POTION)
+                    ItemStackBuilder(Material.POTION)
+                      .setDisplayName(s"${ChatColor.AQUA}ポーションエフェクト設定を開く")
+                      .addItemFlags(ItemFlag.HIDE_ATTRIBUTES,
+                                    ItemFlag.HIDE_POTION_EFFECTS)
+                      .build
                   val openPotionEffectSettingButtonMeta =
                     openPotionEffectSettingButton.getItemMeta
                       .asInstanceOf[PotionMeta]
                   openPotionEffectSettingButtonMeta.setColor(Color.AQUA)
-                  openPotionEffectSettingButtonMeta.setDisplayName(
-                    s"${ChatColor.AQUA}ポーションエフェクト設定を開く")
-                  openPotionEffectSettingButtonMeta.addItemFlags(
-                    ItemFlag.HIDE_ATTRIBUTES,
-                    ItemFlag.HIDE_POTION_EFFECTS)
                   openPotionEffectSettingButton.setItemMeta(
                     openPotionEffectSettingButtonMeta)
                   openPotionEffectSettingButton.setClickAction { player =>
@@ -132,34 +119,27 @@ class PlayerJoinListener extends Listener {
                   }
                   inventory.setItem(12, openPotionEffectSettingButton)
                   val openBreakAmountRankingButton =
-                    new ItemStack(Material.NETHER_STAR)
-                  val openBreakAmountRankingButtonMeta =
-                    openBreakAmountRankingButton.getItemMeta
-                  openBreakAmountRankingButtonMeta.setDisplayName(
-                    s"${ChatColor.AQUA}総整地量ランキングを開く")
-                  openBreakAmountRankingButtonMeta.addItemFlags(
-                    ItemFlag.HIDE_ATTRIBUTES)
-                  openBreakAmountRankingButton.setItemMeta(
-                    openBreakAmountRankingButtonMeta)
+                    ItemStackBuilder(Material.NETHER_STAR)
+                      .setDisplayName(s"${ChatColor.AQUA}総整地量ランキングを開く")
+                      .addItemFlag(ItemFlag.HIDE_ATTRIBUTES)
+                      .build
                   openBreakAmountRankingButton.setClickAction { player =>
                     BreakAmountRankingMenu.open(player)
                     player.playMenuButtonClickSound()
                   }
                   inventory.setItem(34, openBreakAmountRankingButton)
                   def setToggleFlyingButton(player: Player): Unit = {
-                    val toggleFlyingButton = new ItemStack(Material.ELYTRA)
-                    val toggleFlyingButtonMeta = toggleFlyingButton.getItemMeta
-                    toggleFlyingButtonMeta.setDisplayName(
-                      s"${ChatColor.AQUA}Fly切り替え")
-                    toggleFlyingButtonMeta.setLore(
-                      List(
-                        s"現在Flyは ${if (player.isFlying) s"${ChatColor.GREEN}オン"
-                        else s"${ChatColor.RED}オフ"} ${ChatColor.WHITE}になっています。",
-                        "クリックでオン・オフを切り替えられます。"
-                      ).map(str => s"${ChatColor.WHITE}$str").asJava)
-                    toggleFlyingButtonMeta.addItemFlags(
-                      ItemFlag.HIDE_ATTRIBUTES)
-                    toggleFlyingButton.setItemMeta(toggleFlyingButtonMeta)
+                    val toggleFlyingButton = ItemStackBuilder(Material.ELYTRA)
+                      .setDisplayName(s"${ChatColor.AQUA}Fly切り替え")
+                      .addLore(
+                        List(
+                          s"現在Flyは ${if (player.isFlying) s"${ChatColor.GREEN}オン"
+                          else s"${ChatColor.RED}オフ"} ${ChatColor.WHITE}になっています。",
+                          "クリックでオン・オフを切り替えられます。"
+                        ).map(str => s"${ChatColor.WHITE}$str")
+                      )
+                      .addItemFlag(ItemFlag.HIDE_ATTRIBUTES)
+                      .build
                     toggleFlyingButton.setClickAction { _ =>
                       if (player.isFlying) {
                         player.setFlying(false)
@@ -175,15 +155,10 @@ class PlayerJoinListener extends Listener {
                   }
                   setToggleFlyingButton(event.getPlayer)
                   val teleportToSeichiWorldButton =
-                    new ItemStack(Material.GRASS_BLOCK)
-                  val teleportToSeichiWorldButtonMeta =
-                    teleportToSeichiWorldButton.getItemMeta
-                  teleportToSeichiWorldButtonMeta.setDisplayName(
-                    s"${ChatColor.AQUA}整地ワールドに移動")
-                  teleportToSeichiWorldButtonMeta.addItemFlags(
-                    ItemFlag.HIDE_ATTRIBUTES)
-                  teleportToSeichiWorldButton.setItemMeta(
-                    teleportToSeichiWorldButtonMeta)
+                    ItemStackBuilder(Material.GRASS_BLOCK)
+                      .setDisplayName(s"${ChatColor.AQUA}整地ワールドに移動")
+                      .addItemFlag(ItemFlag.HIDE_ATTRIBUTES)
+                      .build
                   teleportToSeichiWorldButton.setClickAction { player =>
                     val seichiWorld =
                       ExternalPlugins.getMultiverseCore.getMVWorldManager
@@ -192,15 +167,10 @@ class PlayerJoinListener extends Listener {
                   }
                   inventory.setItem(27, teleportToSeichiWorldButton)
                   val teleportToNetherSeichiWorldButton =
-                    new ItemStack(Material.NETHERRACK)
-                  val teleportToNetherSeichiWorldButtonMeta =
-                    teleportToNetherSeichiWorldButton.getItemMeta
-                  teleportToNetherSeichiWorldButtonMeta.setDisplayName(
-                    s"${ChatColor.AQUA}ネザー整地ワールドに移動")
-                  teleportToNetherSeichiWorldButtonMeta.addItemFlags(
-                    ItemFlag.HIDE_ATTRIBUTES)
-                  teleportToNetherSeichiWorldButton.setItemMeta(
-                    teleportToNetherSeichiWorldButtonMeta)
+                    ItemStackBuilder(Material.NETHERRACK)
+                      .setDisplayName(s"${ChatColor.AQUA}ネザー整地ワールドに移動")
+                      .addItemFlag(ItemFlag.HIDE_ATTRIBUTES)
+                      .build
                   teleportToNetherSeichiWorldButton.setClickAction { player =>
                     val seichiWorld =
                       ExternalPlugins.getMultiverseCore.getMVWorldManager
@@ -209,15 +179,10 @@ class PlayerJoinListener extends Listener {
                   }
                   inventory.setItem(28, teleportToNetherSeichiWorldButton)
                   val teleportToEndSeichiWorldButton =
-                    new ItemStack(Material.END_STONE)
-                  val teleportToEndSeichiWorldButtonMeta =
-                    teleportToEndSeichiWorldButton.getItemMeta
-                  teleportToEndSeichiWorldButtonMeta.setDisplayName(
-                    s"${ChatColor.AQUA}エンド整地ワールドに移動")
-                  teleportToEndSeichiWorldButtonMeta.addItemFlags(
-                    ItemFlag.HIDE_ATTRIBUTES)
-                  teleportToEndSeichiWorldButton.setItemMeta(
-                    teleportToEndSeichiWorldButtonMeta)
+                    ItemStackBuilder(Material.END_STONE)
+                      .setDisplayName(s"${ChatColor.AQUA}エンド整地ワールドに移動")
+                      .addItemFlag(ItemFlag.HIDE_ATTRIBUTES)
+                      .build
                   teleportToEndSeichiWorldButton.setClickAction { player =>
                     val seichiWorld =
                       ExternalPlugins.getMultiverseCore.getMVWorldManager
@@ -225,24 +190,22 @@ class PlayerJoinListener extends Listener {
                     player.teleport(seichiWorld.getSpawnLocation)
                   }
                   inventory.setItem(29, teleportToEndSeichiWorldButton)
-                  val closeButton = new ItemStack(Material.BARRIER)
-                  val closeButtonMeta = closeButton.getItemMeta
-                  closeButtonMeta.setDisplayName(s"${ChatColor.RED}閉じる")
-                  closeButtonMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES)
-                  closeButton.setItemMeta(closeButtonMeta)
+                  val closeButton = ItemStackBuilder(Material.BARRIER)
+                    .setDisplayName(s"${ChatColor.RED}閉じる")
+                    .addItemFlag(ItemFlag.HIDE_ATTRIBUTES)
+                    .build
                   closeButton.setClickAction { player =>
                     player.closeInventory()
                     player.playMenuButtonClickSound()
                   }
                   inventory.setItem(35, closeButton)
-                  val pickaxe = new ItemStack(Material.DIAMOND_PICKAXE)
-                  val pickaxeMeta = pickaxe.getItemMeta
-                  pickaxeMeta.setUnbreakable(true)
-                  pickaxeMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES,
-                                           ItemFlag.HIDE_UNBREAKABLE)
-                  pickaxe.setItemMeta(pickaxeMeta)
-                  pickaxe.addEnchantment(Enchantment.DIG_SPEED, 5)
-                  pickaxe.addEnchantment(Enchantment.SILK_TOUCH, 1)
+                  val pickaxe = ItemStackBuilder(Material.DIAMOND_PICKAXE)
+                    .setUnbreakable(true)
+                    .addItemFlags(ItemFlag.HIDE_ATTRIBUTES,
+                                  ItemFlag.HIDE_UNBREAKABLE)
+                    .addEnchantment(Enchantment.DIG_SPEED, 5)
+                    .addEnchantment(Enchantment.SILK_TOUCH, 1)
+                    .build
                   inventory.setItem(0, pickaxe)
                   event.getPlayer.setPlayerInfoSkull()
                   val scoreboardManager = Bukkit.getScoreboardManager

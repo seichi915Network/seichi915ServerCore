@@ -6,22 +6,21 @@ import com.sk89q.worldguard.WorldGuard
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin
 import com.sk89q.worldguard.protection.flags.Flags
 import net.seichi915.seichi915servercore.Seichi915ServerCore
+import net.seichi915.seichi915servercore.builder.ItemStackBuilder
 import net.seichi915.seichi915servercore.database.Database
 import net.seichi915.seichi915servercore.inventory.Seichi915ServerInventoryHolder
 import net.seichi915.seichi915servercore.meta.menu.ClickAction
 import net.seichi915.seichi915servercore.playerdata.PlayerData
 import net.seichi915.seichi915servercore.tooltype.ToolType._
 import org.bukkit.block.Block
-import org.bukkit.{Bukkit, ChatColor, Material, NamespacedKey, Sound}
+import org.bukkit.{ChatColor, Material, NamespacedKey, Sound}
 import org.bukkit.entity.Player
-import org.bukkit.inventory.meta.SkullMeta
 import org.bukkit.inventory.{Inventory, ItemFlag, ItemStack}
 import org.bukkit.persistence.PersistentDataType
 import org.bukkit.scoreboard.DisplaySlot
 
 import java.util.UUID
 import scala.concurrent.{ExecutionContext, Future}
-import scala.jdk.CollectionConverters._
 
 object Implicits {
   implicit class AnyOps(any: Any) {
@@ -113,25 +112,24 @@ object Implicits {
           return
         })
       val task = IO {
-        val itemStack = new ItemStack(Material.PLAYER_HEAD)
-        val skullMeta = itemStack.getItemMeta.asInstanceOf[SkullMeta]
-        skullMeta.setOwningPlayer(Bukkit.getOfflinePlayer(player.getUniqueId))
-        skullMeta.setDisplayName(s"${ChatColor.AQUA}${player.getName} さんの情報")
-        skullMeta.setLore(
-          List(
-            s"${ChatColor.GREEN}総整地量: ${ChatColor.WHITE}${playerData.getTotalBreakAmount}",
-            "",
-            s"${ChatColor.GREEN}Rank: ${ChatColor.WHITE}${playerData.getRank}",
-            s"${ChatColor.GREEN}Exp: ${ChatColor.WHITE}${playerData.getExp}/2000.00",
-            "",
-            s"${ChatColor.GREEN}投票ポイント: ${ChatColor.WHITE}${playerData.getVotePoint}",
-            "",
-            s"${ChatColor.GREEN}総整地量ランキング: ${ChatColor.WHITE}${playerData.getRanking(player)}位",
-            "クリックで更新できます。"
-          ).map(str => s"${ChatColor.WHITE}$str").asJava
-        )
-        skullMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES)
-        itemStack.setItemMeta(skullMeta)
+        val itemStack = ItemStackBuilder(Material.PLAYER_HEAD)
+          .setSkullOwner(player)
+          .setDisplayName(s"${ChatColor.AQUA}${player.getName} さんの情報")
+          .addLore(
+            List(
+              s"${ChatColor.GREEN}総整地量: ${ChatColor.WHITE}${playerData.getTotalBreakAmount}",
+              "",
+              s"${ChatColor.GREEN}Rank: ${ChatColor.WHITE}${playerData.getRank}",
+              s"${ChatColor.GREEN}Exp: ${ChatColor.WHITE}${playerData.getExp}/2000.00",
+              "",
+              s"${ChatColor.GREEN}投票ポイント: ${ChatColor.WHITE}${playerData.getVotePoint}",
+              "",
+              s"${ChatColor.GREEN}総整地量ランキング: ${ChatColor.WHITE}${playerData.getRanking(player)}位",
+              "クリックで更新できます。"
+            ).map(str => s"${ChatColor.WHITE}$str")
+          )
+          .addItemFlag(ItemFlag.HIDE_ATTRIBUTES)
+          .build
         itemStack.setClickAction { player =>
           player.playMenuButtonClickSound()
           player.setPlayerInfoSkull()

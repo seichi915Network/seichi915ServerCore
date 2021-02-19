@@ -1,16 +1,15 @@
 package net.seichi915.seichi915servercore.menu
 
 import cats.effect.IO
+import net.seichi915.seichi915servercore.builder.ItemStackBuilder
 import net.seichi915.seichi915servercore.database.Database
 import net.seichi915.seichi915servercore.inventory.Seichi915ServerInventoryHolder
 import net.seichi915.seichi915servercore.meta.menu.Menu
 import org.bukkit.{Bukkit, ChatColor, Material}
 import org.bukkit.entity.Player
-import org.bukkit.inventory.{ItemFlag, ItemStack}
-import org.bukkit.inventory.meta.SkullMeta
+import org.bukkit.inventory.ItemFlag
 
 import scala.concurrent.ExecutionContext
-import scala.jdk.CollectionConverters._
 
 object BreakAmountRankingMenu extends Menu {
   override def open(player: Player): Unit = {
@@ -25,17 +24,16 @@ object BreakAmountRankingMenu extends Menu {
       (0 to 53).foreach { count =>
         if (playerAndBreakAmounts.length > count) {
           val playerAndBreakAmount = playerAndBreakAmounts(count)
-          val itemStack = new ItemStack(Material.PLAYER_HEAD)
-          val skullMeta = itemStack.getItemMeta.asInstanceOf[SkullMeta]
-          skullMeta.setDisplayName(
-            s"${ChatColor.AQUA}${count + 1}位: ${ChatColor.WHITE}${Database
-              .getName(playerAndBreakAmount._1.getUniqueId)
-              .getOrElse(s"${ChatColor.RED}${playerAndBreakAmount._1.getUniqueId.toString}")}")
-          skullMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES)
-          skullMeta.setOwningPlayer(playerAndBreakAmount._1)
-          skullMeta.setLore(List(
-            s"${ChatColor.GREEN}総整地量: ${ChatColor.WHITE}${playerAndBreakAmount._2}").asJava)
-          itemStack.setItemMeta(skullMeta)
+          val itemStack = ItemStackBuilder(Material.PLAYER_HEAD)
+            .setDisplayName(
+              s"${ChatColor.AQUA}${count + 1}位: ${ChatColor.WHITE}${Database
+                .getName(playerAndBreakAmount._1.getUniqueId)
+                .getOrElse(s"${ChatColor.RED}${playerAndBreakAmount._1.getUniqueId.toString}")}")
+            .addItemFlag(ItemFlag.HIDE_ATTRIBUTES)
+            .setSkullOwner(playerAndBreakAmount._1)
+            .addLore(
+              s"${ChatColor.GREEN}総整地量: ${ChatColor.WHITE}${playerAndBreakAmount._2}")
+            .build
           inventory.setItem(count, itemStack)
         }
       }

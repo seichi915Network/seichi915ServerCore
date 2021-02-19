@@ -8,15 +8,17 @@ import org.bukkit.inventory.{ItemFlag, ItemStack}
 import scala.jdk.CollectionConverters._
 
 case class ItemStackBuilder(material: Material,
-                            displayName: Option[String],
-                            lore: List[String],
-                            skullOwner: Option[AnyRef],
-                            var enchantments: Map[Enchantment, Int],
-                            itemFlags: List[ItemFlag]) {
+                            displayName: Option[String] = None,
+                            lore: List[String] = List.empty,
+                            unbreakable: Boolean = false,
+                            skullOwner: Option[AnyRef] = None,
+                            var enchantments: Map[Enchantment, Int] = Map.empty,
+                            itemFlags: List[ItemFlag] = List.empty) {
   def setMaterial(material: Material): ItemStackBuilder =
     ItemStackBuilder(material,
                      displayName,
                      lore,
+                     unbreakable,
                      skullOwner,
                      enchantments,
                      itemFlags)
@@ -25,6 +27,7 @@ case class ItemStackBuilder(material: Material,
     ItemStackBuilder(material,
                      Some(displayName),
                      lore,
+                     unbreakable,
                      skullOwner,
                      enchantments,
                      itemFlags)
@@ -33,6 +36,7 @@ case class ItemStackBuilder(material: Material,
     ItemStackBuilder(material,
                      displayName,
                      this.lore.appended(lore),
+                     unbreakable,
                      skullOwner,
                      enchantments,
                      itemFlags)
@@ -41,6 +45,7 @@ case class ItemStackBuilder(material: Material,
     ItemStackBuilder(material,
                      displayName,
                      this.lore.appendedAll(lore),
+                     unbreakable,
                      skullOwner,
                      enchantments,
                      itemFlags)
@@ -49,6 +54,16 @@ case class ItemStackBuilder(material: Material,
     ItemStackBuilder(material,
                      displayName,
                      this.lore.appendedAll(lore),
+                     unbreakable,
+                     skullOwner,
+                     enchantments,
+                     itemFlags)
+
+  def setUnbreakable(unbreakable: Boolean): ItemStackBuilder =
+    ItemStackBuilder(material,
+                     displayName,
+                     lore,
+                     unbreakable,
                      skullOwner,
                      enchantments,
                      itemFlags)
@@ -57,6 +72,7 @@ case class ItemStackBuilder(material: Material,
     ItemStackBuilder(material,
                      displayName,
                      lore,
+                     unbreakable,
                      Some(offlinePlayer),
                      enchantments,
                      itemFlags)
@@ -65,6 +81,7 @@ case class ItemStackBuilder(material: Material,
     ItemStackBuilder(material,
                      displayName,
                      lore,
+                     unbreakable,
                      Some(name),
                      enchantments,
                      itemFlags)
@@ -74,6 +91,7 @@ case class ItemStackBuilder(material: Material,
     ItemStackBuilder(material,
                      displayName,
                      lore,
+                     unbreakable,
                      skullOwner,
                      enchantments,
                      itemFlags)
@@ -83,6 +101,7 @@ case class ItemStackBuilder(material: Material,
     ItemStackBuilder(material,
                      displayName,
                      lore,
+                     unbreakable,
                      skullOwner,
                      enchantments,
                      itemFlags.appended(itemFlag))
@@ -91,6 +110,7 @@ case class ItemStackBuilder(material: Material,
     ItemStackBuilder(material,
                      displayName,
                      lore,
+                     unbreakable,
                      skullOwner,
                      enchantments,
                      this.itemFlags.appendedAll(itemFlags))
@@ -99,6 +119,7 @@ case class ItemStackBuilder(material: Material,
     ItemStackBuilder(material,
                      displayName,
                      lore,
+                     unbreakable,
                      skullOwner,
                      enchantments,
                      this.itemFlags.appendedAll(itemFlags))
@@ -122,6 +143,7 @@ case class ItemStackBuilder(material: Material,
     }
     itemMeta.setLore(lore.asJava)
     itemMeta.addItemFlags(itemFlags: _*)
+    itemMeta.setUnbreakable(unbreakable)
     itemStack.setItemMeta(itemMeta)
     enchantments.foreach {
       case (enchantment: Enchantment, level: Int) =>
