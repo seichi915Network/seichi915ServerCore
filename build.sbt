@@ -13,7 +13,7 @@ resolvers ++= Seq(
 )
 
 libraryDependencies ++= Seq(
-  "com.destroystokyo.paper" % "paper-api" % "1.16.4-R0.1-SNAPSHOT",
+  "com.destroystokyo.paper" % "paper-api" % "1.16.5-R0.1-SNAPSHOT",
   "net.coreprotect" % "coreprotect" % "19.4",
   "com.sk89q.worldguard" % "worldguard-bukkit" % "7.0.4",
   "com.onarandombox.multiversecore" % "Multiverse-Core" % "4.2.2",
