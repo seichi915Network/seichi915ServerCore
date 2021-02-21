@@ -13,10 +13,11 @@ import net.seichi915.seichi915servercore.meta.menu.ClickAction
 import net.seichi915.seichi915servercore.playerdata.PlayerData
 import net.seichi915.seichi915servercore.tooltype.ToolType._
 import org.bukkit.block.Block
-import org.bukkit.{ChatColor, Material, NamespacedKey, Sound}
+import org.bukkit.{Bukkit, ChatColor, Material, NamespacedKey, Sound}
 import org.bukkit.entity.Player
 import org.bukkit.inventory.{Inventory, ItemFlag, ItemStack}
 import org.bukkit.persistence.PersistentDataType
+import org.bukkit.plugin.java.JavaPlugin
 import org.bukkit.scoreboard.DisplaySlot
 
 import java.util.UUID
@@ -1037,5 +1038,11 @@ object Implicits {
         case CONDUIT                            => Pickaxe
         case _                                  => Other
       }
+  }
+
+  implicit class IOOps(io: IO[_]) {
+    def runOnServerThread(javaPlugin: JavaPlugin): Unit =
+      Bukkit.getScheduler
+        .runTask(javaPlugin, (() => io.unsafeRunSync()): Runnable)
   }
 }

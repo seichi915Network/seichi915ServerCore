@@ -21,6 +21,11 @@ commands:
     usage: /votepoint <add/set> <Player> <Amount>
     permission: seichi915servercore.command.votepoint
     permission-message: "§c権限が不足しています。"
+  prepareworld:
+    description: Prepare the world
+    usage: /prepareworld <normal/nether/end>
+    permission: seichi915servercore.command.prepareworld
+    permission-message: "§c権限が不足しています。"
 permissions:
   seichi915servercore.*:
     description: Grant all permissions of seichi915ServerCore
@@ -31,9 +36,13 @@ permissions:
     children:
       seichi915servercore.command.fly: true
       seichi915servercore.command.votepoint: true
+      seichi915servercore.command.prepareworld: true
   seichi915servercore.command.fly:
-    description: Permission to use /fly
+    description: Permission to use /flyw
     default: true
   seichi915servercore.command.votepoint:
     description: Permission to use /votepoint
+    default: op
+  seichi915servercore.command.prepareworld:
+    description: Permission to use /prepareworld
     default: op

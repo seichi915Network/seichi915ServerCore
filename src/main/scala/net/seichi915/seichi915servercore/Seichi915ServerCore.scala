@@ -51,6 +51,7 @@ class Seichi915ServerCore extends JavaPlugin {
     ).foreach(Bukkit.getPluginManager.registerEvents(_, this))
     Map(
       "fly" -> new FlyCommand,
+      "prepareworld" -> new PrepareWorldCommand,
       "votepoint" -> new VotePointCommand
     ).foreach {
       case (commandName: String, commandExecutor: CommandExecutor) =>

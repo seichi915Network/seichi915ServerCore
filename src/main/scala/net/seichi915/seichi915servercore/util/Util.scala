@@ -1,8 +1,10 @@
 package net.seichi915.seichi915servercore.util
 
+import cats.effect.IO
+import net.seichi915.seichi915servercore.Seichi915ServerCore
 import net.seichi915.seichi915servercore.multibreak.MultiBreak
 import net.seichi915.seichi915servercore.util.Implicits._
-import org.bukkit.Location
+import org.bukkit.{Location, Material}
 import org.bukkit.block.Block
 import org.bukkit.block.BlockFace._
 import org.bukkit.entity.Player
@@ -197,4 +199,19 @@ object Util {
     }
     targetBlocks
   }
+
+  def fillBlocks(firstPosition: Location,
+                 secondPosition: Location,
+                 material: Material): Unit =
+    for (y <- 0 until (firstPosition.getBlockY - secondPosition.getBlockY) + 1;
+         z <- 0 until (firstPosition.getBlockZ - secondPosition.getBlockZ) + 1;
+         x <- 0 until (firstPosition.getBlockX - secondPosition.getBlockX) + 1) {
+      val block = firstPosition.getWorld.getBlockAt(
+        new Location(firstPosition.getWorld,
+                     firstPosition.getBlockX - x,
+                     firstPosition.getBlockY - y,
+                     firstPosition.getBlockZ - z))
+      IO(block.setType(material))
+        .runOnServerThread(Seichi915ServerCore.instance)
+    }
 }
