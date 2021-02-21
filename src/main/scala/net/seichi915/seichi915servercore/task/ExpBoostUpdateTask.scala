@@ -16,6 +16,6 @@ class ExpBoostUpdateTask extends BukkitRunnable {
             case 1 => playerData.setExpBoost(BigDecimal(1.5))
             case 2 => playerData.setExpBoost(BigDecimal(2.5))
             case _ => playerData.setExpBoost(BigDecimal(1.0))
-          }
+          } else playerData.setExpBoost(BigDecimal(1.0))
     }
 }
