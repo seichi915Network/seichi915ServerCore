@@ -5,7 +5,7 @@ import net.seichi915.seichi915servercore.event.PlayerSeichiEvent
 import net.seichi915.seichi915servercore.external.ExternalPlugins
 import net.seichi915.seichi915servercore.util.Implicits._
 import net.seichi915.seichi915servercore.util.Util
-import org.bukkit.{Bukkit, ChatColor, GameMode, Material}
+import org.bukkit.{Bukkit, ChatColor, GameMode, Location, Material}
 import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.event.{EventHandler, Listener}
 
@@ -25,6 +25,19 @@ class BlockBreakListener extends Listener {
     event.setCancelled(true)
     if (!tools.contains(event.getPlayer.getInventory.getItemInMainHand.getType)) {
       event.getPlayer.sendActionBar("ツールを使用して掘ってください。")
+      return
+    }
+    var blockCount = 0
+    for (i <- event.getBlock.getLocation.getBlockY + 1 until 256) {
+      val location = new Location(event.getBlock.getWorld,
+                                  event.getBlock.getLocation.getBlockX,
+                                  i,
+                                  event.getBlock.getLocation.getBlockZ)
+      if (event.getBlock.getWorld.getBlockAt(location).getType != Material.AIR)
+        blockCount += 1
+    }
+    if (blockCount >= 20) {
+      event.getPlayer.sendActionBar("上から掘ってください。")
       return
     }
     val playerData =
