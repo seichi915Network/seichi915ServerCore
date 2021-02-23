@@ -38,7 +38,8 @@ class PlayerJoinListener extends Listener {
             bossBar.setProgress(1.0)
             bossBar.addPlayer(event.getPlayer)
             Seichi915ServerCore.bossBarMap += event.getPlayer -> bossBar
-            event.getPlayer.setGameMode(GameMode.SURVIVAL)
+            IO(event.getPlayer.setGameMode(GameMode.SURVIVAL))
+              .runOnServerThread(Seichi915ServerCore.instance)
             while (playerData.canRankUp) {
               event.getPlayer.playRankUpSound()
               event.getPlayer.sendMessage(
