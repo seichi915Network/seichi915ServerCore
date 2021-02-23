@@ -127,5 +127,5 @@ case class PlayerData(var totalBreakAmount: Long,
 
   def canRankUp: Boolean = getRank < 1000 && getExp >= BigDecimal(2000.0)
 
-  def save(player: Player): Future[Unit] = Database.savePlayerData(player, this)
+  def save(player: Player): Unit = Database.savePlayerData(player, this)
 }

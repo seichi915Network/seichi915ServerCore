@@ -9,9 +9,6 @@ import scalikejdbc._
 
 import java.io.{File, FileOutputStream}
 import java.util.UUID
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
-import scala.util.{Failure, Success}
 
 object Database {
   Class.forName("org.sqlite.JDBC")
@@ -51,7 +48,7 @@ object Database {
         false
     }
 
-  def getPlayerData(player: Player): Future[Option[PlayerData]] = Future {
+  def getPlayerData(player: Player): Option[PlayerData] = {
     val playerDataList = DB localTx { implicit session =>
       sql"SELECT * FROM playerdata WHERE uuid = ${player.getUniqueId}"
         .map(resultSet =>
@@ -95,7 +92,7 @@ object Database {
     }
   }
 
-  def createNewPlayerData(player: Player): Future[Unit] = Future {
+  def createNewPlayerData(player: Player): Unit =
     DB localTx { implicit session =>
       sql"""INSERT INTO playerdata (
            uuid,
@@ -147,12 +144,10 @@ object Database {
         .update()
         .apply()
     }
-  }
 
-  def savePlayerData(player: Player, playerData: PlayerData): Future[Unit] =
-    Future {
-      DB localTx { implicit session =>
-        sql"""UPDATE playerdata SET
+  def savePlayerData(player: Player, playerData: PlayerData): Unit =
+    DB localTx { implicit session =>
+      sql"""UPDATE playerdata SET
              name=${player.getName},
              total_break_amount=${playerData.getTotalBreakAmount},
              rank=${playerData.getRank},
@@ -175,14 +170,13 @@ object Database {
              jump_boost_effect_amplifier=${playerData.getJumpBoostEffectAmplifier},
              night_vision_effect_enabled=${playerData.isNightVisionEffectEnabled}
              WHERE uuid = ${player.getUniqueId}"""
-          .update()
-          .apply()
-      }
+        .update()
+        .apply()
     }
 
-  def updatePlayerNameIfChanged(player: Player): Future[Unit] = Future {
-    getPlayerData(player) onComplete {
-      case Success(value) if value.nonEmpty =>
+  def updatePlayerNameIfChanged(player: Player): Unit = {
+    getPlayerData(player) match {
+      case Some(_) =>
         val previousPlayerName = DB localTx { implicit session =>
           sql"SELECT name FROM playerdata WHERE uuid = ${player.getUniqueId}"
             .map(_.string("name"))
@@ -196,8 +190,7 @@ object Database {
               .update()
               .apply()
           }
-      case Failure(exception) => throw exception
-      case _                  =>
+      case None =>
     }
   }
 

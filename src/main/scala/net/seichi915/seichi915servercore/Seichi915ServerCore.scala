@@ -16,8 +16,6 @@ import org.bukkit.scoreboard.Scoreboard
 
 import java.util.UUID
 import scala.collection.mutable
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.util.{Failure, Success}
 
 object Seichi915ServerCore {
   var instance: Seichi915ServerCore = _
@@ -77,15 +75,13 @@ class Seichi915ServerCore extends JavaPlugin {
   override def onDisable(): Unit = {
     Seichi915ServerCore.playerDataMap.foreach {
       case (player: Player, playerData: PlayerData) =>
-        playerData.save(player) onComplete {
-          case Success(_) =>
-            Seichi915ServerCore.playerDataMap.remove(player)
-          case Failure(exception) =>
-            exception.printStackTrace()
+        try playerData.save(player)
+        catch {
+          case e: Exception =>
+            e.printStackTrace()
             Seichi915ServerCore.instance.getLogger
               .warning(s"${player.getName}さんのプレイヤーデータのセーブに失敗しました。")
-            Seichi915ServerCore.playerDataMap.remove(player)
-        }
+        } finally Seichi915ServerCore.playerDataMap.remove(player)
     }
 
     getLogger.info("seichi915ServerCoreが無効になりました。")

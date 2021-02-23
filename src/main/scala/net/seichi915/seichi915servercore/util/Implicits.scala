@@ -7,10 +7,8 @@ import com.sk89q.worldguard.bukkit.WorldGuardPlugin
 import com.sk89q.worldguard.protection.flags.Flags
 import net.seichi915.seichi915servercore.Seichi915ServerCore
 import net.seichi915.seichi915servercore.builder.ItemStackBuilder
-import net.seichi915.seichi915servercore.database.Database
 import net.seichi915.seichi915servercore.inventory.Seichi915ServerInventoryHolder
 import net.seichi915.seichi915servercore.meta.menu.ClickAction
-import net.seichi915.seichi915servercore.playerdata.PlayerData
 import net.seichi915.seichi915servercore.tooltype.ToolType._
 import org.bukkit.block.Block
 import org.bukkit.{Bukkit, ChatColor, Material, NamespacedKey, Sound}
@@ -21,7 +19,7 @@ import org.bukkit.plugin.java.JavaPlugin
 import org.bukkit.scoreboard.DisplaySlot
 
 import java.util.UUID
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.ExecutionContext
 
 object Implicits {
   implicit class AnyOps(any: Any) {
@@ -50,11 +48,6 @@ object Implicits {
   }
 
   implicit class PlayerOps(player: Player) {
-    def getPlayerData: Future[Option[PlayerData]] =
-      Database.getPlayerData(player)
-
-    def createNewPlayerData: Future[Unit] = Database.createNewPlayerData(player)
-
     def playMenuButtonClickSound(): Unit =
       player.playSound(player.getLocation, Sound.UI_BUTTON_CLICK, 1, 1)
 
