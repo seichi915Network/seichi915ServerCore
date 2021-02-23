@@ -195,9 +195,11 @@ class PlayerJoinListener extends Listener {
             inventory.setItem(0, pickaxe)
             event.getPlayer.setPlayerInfoSkull()
             val scoreboardManager = Bukkit.getScoreboardManager
-            val scoreboard = scoreboardManager.getNewScoreboard
-            event.getPlayer.setScoreboard(scoreboard)
-            Seichi915ServerCore.scoreboardMap += event.getPlayer -> scoreboard
+            IO {
+              val scoreboard = scoreboardManager.getNewScoreboard
+              event.getPlayer.setScoreboard(scoreboard)
+              Seichi915ServerCore.scoreboardMap += event.getPlayer -> scoreboard
+            }.runOnServerThread(Seichi915ServerCore.instance)
           case None =>
             Seichi915ServerCore.instance.getLogger
               .info(s"${event.getPlayer.getName}さんのプレイヤーデータが見つかりませんでした。作成します。")
