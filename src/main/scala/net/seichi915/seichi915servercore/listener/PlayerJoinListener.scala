@@ -39,7 +39,7 @@ class PlayerJoinListener extends Listener {
             bossBar.addPlayer(event.getPlayer)
             Seichi915ServerCore.bossBarMap += event.getPlayer -> bossBar
             IO(event.getPlayer.setGameMode(GameMode.SURVIVAL))
-              .runOnServerThread(Seichi915ServerCore.instance)
+              .unsafeRunOnServerThread(Seichi915ServerCore.instance)
             while (playerData.canRankUp) {
               event.getPlayer.playRankUpSound()
               event.getPlayer.sendMessage(
@@ -200,7 +200,7 @@ class PlayerJoinListener extends Listener {
               val scoreboard = scoreboardManager.getNewScoreboard
               event.getPlayer.setScoreboard(scoreboard)
               Seichi915ServerCore.scoreboardMap += event.getPlayer -> scoreboard
-            }.runOnServerThread(Seichi915ServerCore.instance)
+            }.unsafeRunOnServerThread(Seichi915ServerCore.instance)
           case None =>
             Seichi915ServerCore.instance.getLogger
               .info(s"${event.getPlayer.getName}さんのプレイヤーデータが見つかりませんでした。作成します。")
@@ -213,7 +213,7 @@ class PlayerJoinListener extends Listener {
           IO(
             event.getPlayer
               .kickPlayer("プレイヤーデータの読み込みに失敗しました。".toErrorMessage))
-            .runOnServerThread(Seichi915ServerCore.instance)
+            .unsafeRunOnServerThread(Seichi915ServerCore.instance)
       }
     }
     val contextShift = IO.contextShift(ExecutionContext.global)

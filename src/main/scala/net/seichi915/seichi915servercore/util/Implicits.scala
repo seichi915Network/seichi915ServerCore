@@ -1034,7 +1034,7 @@ object Implicits {
   }
 
   implicit class IOOps(io: IO[_]) {
-    def runOnServerThread(javaPlugin: JavaPlugin): Unit =
+    def unsafeRunOnServerThread(javaPlugin: JavaPlugin): Unit =
       Bukkit.getScheduler
         .runTask(javaPlugin, (() => io.unsafeRunSync()): Runnable)
   }
