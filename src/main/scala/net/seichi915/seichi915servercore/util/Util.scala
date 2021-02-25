@@ -212,6 +212,6 @@ object Util {
                      firstPosition.getBlockY - y,
                      firstPosition.getBlockZ - z))
       IO(block.setType(material))
-        .runOnServerThread(Seichi915ServerCore.instance)
+        .unsafeRunOnServerThread(Seichi915ServerCore.instance)
     }
 }

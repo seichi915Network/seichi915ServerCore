@@ -67,7 +67,7 @@ class PrepareWorldCommand extends CommandExecutor with TabCompleter {
                            0.0,
                            entity.getLocation.getZ))
             IO(entity.remove())
-              .runOnServerThread(Seichi915ServerCore.instance)
+              .unsafeRunOnServerThread(Seichi915ServerCore.instance)
           }
       }
     implicit val timer: Timer[IO] = IO.timer(ExecutionContext.global)
