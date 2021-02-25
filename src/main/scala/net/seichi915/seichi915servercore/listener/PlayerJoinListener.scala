@@ -31,7 +31,7 @@ class PlayerJoinListener extends Listener {
               .createBossBar(
                 new NamespacedKey(Seichi915ServerCore.instance,
                                   s"${event.getPlayer.getName}_BossBar"),
-                s"総整地量: ${Seichi915ServerCore.playerDataMap(event.getPlayer).getTotalBreakAmount}",
+                s"総整地量: ${playerData.getTotalBreakAmount}",
                 BarColor.WHITE,
                 BarStyle.SOLID
               )
