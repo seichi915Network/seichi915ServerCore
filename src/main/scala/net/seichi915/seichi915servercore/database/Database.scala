@@ -235,4 +235,22 @@ object Database {
         .update()
         .apply()
     }
+
+  def getRank(uuid: UUID): Option[Int] =
+    DB localTx { implicit session =>
+      sql"SELECT rank FROM playerdata WHERE uuid = $uuid"
+        .map(_.int("rank"))
+        .list()
+        .apply()
+        .headOption
+    }
+
+  def getExp(uuid: UUID): Option[Double] =
+    DB localTx { implicit session =>
+      sql"SELECT exp FROM playerdata WHERE uuid = $uuid"
+        .map(_.double("exp"))
+        .list()
+        .apply()
+        .headOption
+    }
 }

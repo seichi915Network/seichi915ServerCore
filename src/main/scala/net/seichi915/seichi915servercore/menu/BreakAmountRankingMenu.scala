@@ -32,7 +32,11 @@ object BreakAmountRankingMenu extends Menu {
             .addItemFlag(ItemFlag.HIDE_ATTRIBUTES)
             .setSkullOwner(playerAndBreakAmount._1)
             .addLore(
-              s"${ChatColor.GREEN}総整地量: ${ChatColor.WHITE}${playerAndBreakAmount._2}")
+              s"${ChatColor.GREEN}総整地量: ${ChatColor.WHITE}${playerAndBreakAmount._2}",
+              "",
+              s"${ChatColor.GREEN}Rank: ${ChatColor.WHITE}${Database.getRank(playerAndBreakAmount._1.getUniqueId).getOrElse(1)}",
+              s"${ChatColor.GREEN}Exp: ${ChatColor.WHITE}${Database.getExp(playerAndBreakAmount._1.getUniqueId).getOrElse(0.0)}"
+            )
             .build
           inventory.setItem(count, itemStack)
         }
