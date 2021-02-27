@@ -108,10 +108,14 @@ case class PlayerData(var totalBreakAmount: Long,
     this.nightVisionEffectEnabled = nightVisionEffectEnabled
 
   def getRanking(player: Player): Int = {
-    Database.getPlayerAndBreakAmount.sortBy(_._2).reverse.zipWithIndex.foreach {
-      case ((offlinePlayer: OfflinePlayer, _), index: Int) =>
-        if (offlinePlayer.getUniqueId == player.getUniqueId) return index + 1
-    }
+    Database.getPlayerAndBreakAmount
+      .sortBy(_._2)
+      .reverse
+      .zipWithIndex
+      .foreach {
+        case ((offlinePlayer: OfflinePlayer, _), index: Int) =>
+          if (offlinePlayer.getUniqueId == player.getUniqueId) return index + 1
+      }
     0
   }
 
