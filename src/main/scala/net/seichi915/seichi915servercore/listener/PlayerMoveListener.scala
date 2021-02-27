@@ -74,18 +74,8 @@ class PlayerMoveListener extends Listener {
                      firstPosition.getBlockX - x,
                      firstPosition.getBlockY - y,
                      firstPosition.getBlockZ - z))
-      if (block.getType != Material.SMOOTH_STONE_SLAB) {
-        if (block.getType != Material.AIR)
-          ExternalPlugins.getCoreProtectAPI.logRemoval(event.getPlayer.getName,
-                                                       block.getLocation,
-                                                       block.getType,
-                                                       block.getBlockData)
+      if (block.getType != Material.SMOOTH_STONE_SLAB)
         block.setType(Material.SMOOTH_STONE_SLAB)
-        ExternalPlugins.getCoreProtectAPI.logPlacement(event.getPlayer.getName,
-                                                       block.getLocation,
-                                                       block.getType,
-                                                       block.getBlockData)
-      }
     }
   }
 }
