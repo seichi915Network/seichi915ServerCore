@@ -6,9 +6,7 @@ import org.bukkit.event.{Cancellable, HandlerList}
 import org.bukkit.event.player.PlayerEvent
 
 object PlayerSeichiEvent {
-  private val handlerList: HandlerList = new HandlerList
-
-  def getHandlerList: HandlerList = handlerList
+  private val handlers: HandlerList = new HandlerList
 }
 
 class PlayerSeichiEvent(who: Player, block: Block)
@@ -22,5 +20,5 @@ class PlayerSeichiEvent(who: Player, block: Block)
 
   override def setCancelled(cancel: Boolean): Unit = cancelled = cancel
 
-  override def getHandlers: HandlerList = PlayerSeichiEvent.getHandlerList
+  override def getHandlers: HandlerList = PlayerSeichiEvent.handlers
 }
