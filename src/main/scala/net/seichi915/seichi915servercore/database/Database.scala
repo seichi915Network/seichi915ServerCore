@@ -48,8 +48,8 @@ object Database {
         false
     }
 
-  def getPlayerData(player: Player): Option[PlayerData] = {
-    val playerDataList = DB localTx { implicit session =>
+  def getPlayerData(player: Player): Option[PlayerData] =
+    DB localTx { implicit session =>
       sql"SELECT * FROM playerdata WHERE uuid = ${player.getUniqueId}"
         .map(resultSet =>
           PlayerData(
@@ -77,11 +77,10 @@ object Database {
         ))
         .list()
         .apply()
+        .headOption
     }
-    playerDataList.headOption
-  }
 
-  def getPlayerAndBreakAmount: List[(OfflinePlayer, Long)] = {
+  def getPlayerAndBreakAmount: List[(OfflinePlayer, Long)] =
     DB localTx { implicit session =>
       sql"SELECT * FROM playerdata"
         .map(resultSet =>
@@ -90,7 +89,6 @@ object Database {
         .list()
         .apply()
     }
-  }
 
   def createNewPlayerData(player: Player): Unit =
     DB localTx { implicit session =>
@@ -175,23 +173,19 @@ object Database {
     }
 
   def updatePlayerNameIfChanged(player: Player): Unit = {
-    getPlayerData(player) match {
-      case Some(_) =>
-        val previousPlayerName = DB localTx { implicit session =>
-          sql"SELECT name FROM playerdata WHERE uuid = ${player.getUniqueId}"
-            .map(_.string("name"))
-            .list()
-            .apply()
-            .head
-        }
-        if (!player.getName.equals(previousPlayerName))
-          DB localTx { implicit session =>
-            sql"UPDATE playerdata SET name=${player.getName} WHERE uuid = ${player.getUniqueId}"
-              .update()
-              .apply()
-          }
-      case None =>
+    val previousPlayerName = DB localTx { implicit session =>
+      sql"SELECT name FROM playerdata WHERE uuid = ${player.getUniqueId}"
+        .map(_.string("name"))
+        .list()
+        .apply()
+        .head
     }
+    if (!player.getName.equals(previousPlayerName))
+      DB localTx { implicit session =>
+        sql"UPDATE playerdata SET name=${player.getName} WHERE uuid = ${player.getUniqueId}"
+          .update()
+          .apply()
+      }
   }
 
   def getName(uuid: UUID): Option[String] =
