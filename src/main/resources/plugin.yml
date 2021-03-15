@@ -1,5 +1,5 @@
 name: Seichi915ServerCore
-version: 1.0.0
+version: 1.0.1
 main: net.seichi915.seichi915servercore.Seichi915ServerCore
 api-version: "1.13"
 load: POSTWORLD
