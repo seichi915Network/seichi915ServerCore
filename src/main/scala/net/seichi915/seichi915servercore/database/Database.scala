@@ -13,7 +13,11 @@ import java.util.UUID
 object Database {
   Class.forName("org.sqlite.JDBC")
 
-  ConnectionPool.singleton(
+  private val dbName =
+    Seichi915ServerCore.instance.getDescription.getName.toLowerCase
+
+  ConnectionPool.add(
+    dbName,
     s"jdbc:sqlite:${Seichi915ServerCore.instance.getDataFolder.getAbsolutePath}/database.db",
     "",
     "")
@@ -49,7 +53,7 @@ object Database {
     }
 
   def getPlayerData(player: Player): Option[PlayerData] =
-    DB localTx { implicit session =>
+    NamedDB(dbName) localTx { implicit session =>
       sql"SELECT * FROM playerdata WHERE uuid = ${player.getUniqueId}"
         .map(resultSet =>
           PlayerData(
@@ -81,7 +85,7 @@ object Database {
     }
 
   def getPlayerAndBreakAmount: List[(OfflinePlayer, Long)] =
-    DB localTx { implicit session =>
+    NamedDB(dbName) localTx { implicit session =>
       sql"SELECT * FROM playerdata"
         .map(resultSet =>
           (Bukkit.getOfflinePlayer(UUID.fromString(resultSet.string("uuid"))),
@@ -91,7 +95,7 @@ object Database {
     }
 
   def createNewPlayerData(player: Player): Unit =
-    DB localTx { implicit session =>
+    NamedDB(dbName) localTx { implicit session =>
       sql"""INSERT INTO playerdata (
            uuid,
            name,
@@ -144,7 +148,7 @@ object Database {
     }
 
   def savePlayerData(player: Player, playerData: PlayerData): Unit =
-    DB localTx { implicit session =>
+    NamedDB(dbName) localTx { implicit session =>
       sql"""UPDATE playerdata SET
              name=${player.getName},
              total_break_amount=${playerData.getTotalBreakAmount},
@@ -173,7 +177,7 @@ object Database {
     }
 
   def updatePlayerNameIfChanged(player: Player): Unit = {
-    val previousPlayerName = DB localTx { implicit session =>
+    val previousPlayerName = NamedDB(dbName) localTx { implicit session =>
       sql"SELECT name FROM playerdata WHERE uuid = ${player.getUniqueId}"
         .map(_.string("name"))
         .list()
@@ -181,7 +185,7 @@ object Database {
         .head
     }
     if (!player.getName.equals(previousPlayerName))
-      DB localTx { implicit session =>
+      NamedDB(dbName) localTx { implicit session =>
         sql"UPDATE playerdata SET name=${player.getName} WHERE uuid = ${player.getUniqueId}"
           .update()
           .apply()
@@ -189,7 +193,7 @@ object Database {
   }
 
   def getName(uuid: UUID): Option[String] =
-    DB localTx { implicit session =>
+    NamedDB(dbName) localTx { implicit session =>
       sql"SELECT name FROM playerdata WHERE uuid = $uuid"
         .map(_.string("name"))
         .list()
@@ -198,7 +202,7 @@ object Database {
     }
 
   def getNames: List[String] =
-    DB localTx { implicit session =>
+    NamedDB(dbName) localTx { implicit session =>
       sql"SELECT name FROM playerdata"
         .map(_.string("name"))
         .list()
@@ -206,7 +210,7 @@ object Database {
     }
 
   def getUUID(name: String): Option[UUID] =
-    DB localTx { implicit session =>
+    NamedDB(dbName) localTx { implicit session =>
       sql"SELECT uuid FROM playerdata WHERE name = $name"
         .map(resultSet => UUID.fromString(resultSet.string("uuid")))
         .list()
@@ -215,7 +219,7 @@ object Database {
     }
 
   def getVotePoint(uuid: UUID): Int =
-    DB localTx { implicit session =>
+    NamedDB(dbName) localTx { implicit session =>
       sql"SELECT vote_point FROM playerdata WHERE uuid = $uuid"
         .map(_.int("vote_point"))
         .list()
@@ -224,14 +228,14 @@ object Database {
     }
 
   def setVotePoint(uuid: UUID, point: Int): Unit =
-    DB localTx { implicit session =>
+    NamedDB(dbName) localTx { implicit session =>
       sql"UPDATE playerdata SET vote_point=$point WHERE uuid = $uuid"
         .update()
         .apply()
     }
 
   def getRank(uuid: UUID): Option[Int] =
-    DB localTx { implicit session =>
+    NamedDB(dbName) localTx { implicit session =>
       sql"SELECT rank FROM playerdata WHERE uuid = $uuid"
         .map(_.int("rank"))
         .list()
@@ -240,7 +244,7 @@ object Database {
     }
 
   def getExp(uuid: UUID): Option[Double] =
-    DB localTx { implicit session =>
+    NamedDB(dbName) localTx { implicit session =>
       sql"SELECT exp FROM playerdata WHERE uuid = $uuid"
         .map(_.double("exp"))
         .list()
